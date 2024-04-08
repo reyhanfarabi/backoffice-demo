@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-row justify-end items-center px-6 h-16 border-b border-gray-200">
+  <div class="flex flex-row justify-between items-center px-6 h-16 bg-white border-b border-gray-200 shadow">
+    <RouterLink to="/">
+      <h1 class="font-bold text-lg">Backoffice</h1>
+    </RouterLink>
 
     <!-- User Button -->
     <button class="flex flex-row justify-between items-center max-w-36 px-2 py-1 gap-2 rounded hover:bg-gray-200 ">

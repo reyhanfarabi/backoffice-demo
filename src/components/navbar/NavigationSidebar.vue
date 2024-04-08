@@ -1,9 +1,5 @@
 <template>
-  <aside class="w-72 bg-gray-100 divide-y divide-gray-200">
-    <RouterLink to="/" class="flex px-6 h-16 items-center">
-      <h1 class="font-bold text-lg">Backoffice</h1>
-    </RouterLink>
-
+  <aside class="w-72 bg-white shadow-md">
     <nav class="flex-grow flex flex-col py-3">
       <div class="flex flex-col" v-for="route in newRoutes" :key="route.path">
         <RouterLink v-if="route.children.length === 0" :to="route.path"
