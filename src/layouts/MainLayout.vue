@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-screen h-screen flex flex-col text-gray-900 bg-gray-100 font-roboto subpixel-antialiased"
+    class="w-screen h-screen flex flex-col text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-900 font-roboto subpixel-antialiased"
   >
     <MainHeader />
 
