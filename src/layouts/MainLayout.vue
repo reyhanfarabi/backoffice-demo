@@ -5,8 +5,8 @@
     <MainHeader />
 
     <div class="flex flex-row flex-grow">
-      <NavigationSidebar />
-      <main class="flex-grow p-4">
+      <NavigationSidebar class="w-full" />
+      <main class="p-8 min-w-[86vw]">
         <slot />
       </main>
     </div>
