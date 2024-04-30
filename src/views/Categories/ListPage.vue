@@ -1,12 +1,18 @@
 <template>
   <div class="flex flex-col gap-8">
-    <h1 class="text-2xl font-bold">Categories</h1>
+    <div class="flex flex-row justify-between items-center">
+      <h1 class="text-2xl font-bold">Categories</h1>
+      <BaseButton>
+        <span class="text-sm font-semibold">New Category</span>
+      </BaseButton>
+    </div>
 
     <BaseTable :headers="headers" :datalist="datalist" />
   </div>
 </template>
 
 <script setup lang="ts">
+import BaseButton from '@/components/buttons/BaseButton.vue';
 import BaseTable from '@/components/table/BaseTable.vue'
 import { ref } from 'vue'
 
