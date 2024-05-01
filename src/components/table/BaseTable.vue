@@ -29,7 +29,7 @@
 <script setup lang="ts">
 export interface IBaseTableProps {
   headers: string[]
-  datalist: (string | number)[][]
+  datalist: any[][]
 }
 
 const props = defineProps<IBaseTableProps>()
