@@ -1,5 +1,6 @@
-import ListPage from '@/views/Categories/ListPage.vue'
+import CategoriesListPage from '@/views/Categories/ListPage.vue'
 import MainView from '@/views/MainView.vue'
+import ProductsListPage from '@/views/Products/ListPage.vue'
 import type { RouteComponent } from 'vue-router'
 
 export interface IRouteBase {
@@ -49,8 +50,15 @@ export const routes: IRoute[] = [
   {
     path: '/categories',
     name: 'Categories',
-    component: ListPage,
+    component: CategoriesListPage,
     icon: 'pi-th-large',
+    children: []
+  },
+  {
+    path: '/products',
+    name: 'Products',
+    component: ProductsListPage,
+    icon: 'pi-database',
     children: []
   }
 ]
