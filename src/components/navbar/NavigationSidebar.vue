@@ -6,9 +6,20 @@
           v-if="route.children.length === 0"
           :to="route.path"
           class="flex flex-row gap-2 p-3 mx-3 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded"
+          :class="[
+            {
+              'bg-teal-500 dark:bg-teal-600 hover:bg-teal-500/80 dark:hover:bg-teal-600/80':
+                $route.name === route.name
+            }
+          ]"
         >
           <i class="pi" :class="route.icon" />
-          <span class="text-sm text-neutral-700 dark:text-neutral-400"> {{ route.name }}</span>
+          <span
+            class="text-sm text-neutral-700 dark:text-neutral-400"
+            :class="[{ 'text-white dark:text-white': $route.name === route.name }]"
+          >
+            {{ route.name }}</span
+          >
         </RouterLink>
 
         <div v-else class="flex flex-col">
