@@ -7,16 +7,18 @@
       </BaseButton>
     </div>
 
-    <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
-      <template #2="{ data }">
-        <div class="truncate max-w-[28rem]">
-          {{ data }}
-        </div>
-      </template>
-      <template #empty>
-        <span class="flex justify-center p-4">No categories Found</span>
-      </template>
-    </BaseTable>
+    <div class="flex w-full h-[72vh]">
+      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
+        <template #2="{ data }">
+          <div class="truncate max-w-[28rem]">
+            {{ data }}
+          </div>
+        </template>
+        <template #empty>
+          <span class="flex justify-center p-4">No categories Found</span>
+        </template>
+      </BaseTable>
+    </div>
   </div>
 </template>
 
