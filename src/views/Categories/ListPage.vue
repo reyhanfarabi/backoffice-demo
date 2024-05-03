@@ -7,13 +7,19 @@
       </BaseButton>
     </div>
 
-    <BaseTable :headers="headers" :datalist="data" :table-config="tableConfig" />
+    <BaseTable :headers="headers" :datalist="data">
+      <template #2="{ data }">
+        <div class="truncate max-w-[28rem]">
+          {{ data }}
+        </div>
+      </template>
+    </BaseTable>
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/buttons/BaseButton.vue'
-import BaseTable, { type IBaseTableColConfig } from '@/components/table/BaseTable.vue'
+import BaseTable from '@/components/table/BaseTable.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
 import { onMounted, ref, type Ref } from 'vue'
@@ -21,13 +27,6 @@ import { onMounted, ref, type Ref } from 'vue'
 const categoriesStore = useCategoriesStore()
 const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At'])
 const data: Ref<(string | number)[][]> = ref([])
-const tableConfig: Ref<IBaseTableColConfig[]> = ref([
-  { width: '' },
-  { width: '' },
-  { width: '42rem' },
-  { width: '' },
-  { width: '' },
-])
 
 onMounted(async () => {
   await categoriesStore.dispatchGetCategories()
