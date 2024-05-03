@@ -7,11 +7,14 @@
       </BaseButton>
     </div>
 
-    <BaseTable :headers="headers" :datalist="data">
+    <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
       <template #2="{ data }">
         <div class="truncate max-w-[28rem]">
           {{ data }}
         </div>
+      </template>
+      <template #empty>
+        <span class="flex justify-center p-4">No categories Found</span>
       </template>
     </BaseTable>
   </div>
@@ -28,8 +31,10 @@ import { onMounted, ref, type Ref } from 'vue'
 const categoriesStore = useCategoriesStore()
 const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At'])
 const data: Ref<(string | number)[][]> = ref([])
+const isLoading: Ref<boolean> = ref(false)
 
 onMounted(async () => {
+  isLoading.value = true
   await categoriesStore.dispatchGetCategories()
 
   // map data to show in the table
@@ -42,5 +47,6 @@ onMounted(async () => {
       dayjs(c.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
     ]
   })
+  isLoading.value = false
 })
 </script>
