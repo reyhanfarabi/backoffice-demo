@@ -22,6 +22,7 @@ import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
+import dayjs from 'dayjs'
 import { onMounted, ref, type Ref } from 'vue'
 
 const categoriesStore = useCategoriesStore()
@@ -33,7 +34,13 @@ onMounted(async () => {
 
   // map data to show in the table
   data.value = categoriesStore.categories.map((c: ICategory) => {
-    return [c.id, c.name, c.image, c.creationAt, c.updatedAt]
+    return [
+      c.id,
+      c.name,
+      c.image,
+      dayjs(c.creationAt).format('YYYY-MM-DD HH:mm:ss Z'),
+      dayjs(c.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
+    ]
   })
 })
 </script>
