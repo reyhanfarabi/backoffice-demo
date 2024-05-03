@@ -38,11 +38,12 @@ const isLoading: Ref<boolean> = ref(false)
 const headers = ref(['ID', 'Title', 'Category', 'Price', 'Description', 'Created At', 'Updated At'])
 const data: Ref<(string | number)[][]> = ref([])
 
-onMounted(() => {
+onMounted(async () => {
   isLoading.value = true
 
-  // type will be adjusted later
-  data.value = productsStore.products.map((p: any) => {
+  await productsStore.dispatchGetProducts()
+
+  data.value = productsStore.products.map((p) => {
     return [
       p.id,
       p.title,

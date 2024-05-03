@@ -1,3 +1,4 @@
 export const endpoints = {
-  categories: 'categories'
+  categories: 'categories',
+  products: 'products'
 }
