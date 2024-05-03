@@ -13,8 +13,27 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+
+      <tbody v-if="props.isLoading">
+        <tr>
+          <td :colspan="props.headers.length">
+            <LoadingSpinner class="flex justify-center items-center p-4" />
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody v-else>
+        <tr v-if="!props.datalist.length">
+          <td :colspan="props.headers.length">
+            <div v-if="$slots['empty']">
+              <slot name="empty" />
+            </div>
+            <span v-else class="flex justify-center p-4">No Data Found</span>
+          </td>
+        </tr>
+
         <tr
+          v-else
           class="border-b last:border-0 border-neutral-300 dark:border-neutral-600 hover:bg-neutral-200 dark:hover:bg-neutral-800"
           v-for="(data, dataIndex) in props.datalist"
           :key="dataIndex"
@@ -34,10 +53,15 @@
 </template>
 
 <script setup lang="ts">
+import LoadingSpinner from '../loadings/LoadingSpinner.vue'
+
 export interface IBaseTableProps {
   headers: string[]
   datalist: any[][]
+  isLoading: boolean
 }
 
-const props = defineProps<IBaseTableProps>()
+const props = withDefaults(defineProps<IBaseTableProps>(), {
+  isLoading: false
+})
 </script>
