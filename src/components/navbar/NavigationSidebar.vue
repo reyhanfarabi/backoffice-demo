@@ -13,7 +13,7 @@
             }
           ]"
         >
-          <i class="pi" :class="route.icon" />
+          <i class="pi" :class="[route.icon, { 'text-white': $route.name === route.name }]" />
           <span
             class="text-sm text-neutral-700 dark:text-neutral-400"
             :class="[{ 'text-white dark:text-white': $route.name === route.name }]"
