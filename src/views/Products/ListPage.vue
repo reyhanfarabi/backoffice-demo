@@ -7,8 +7,15 @@
       </BaseButton>
     </div>
 
-    <div class="flex w-full h-[72vh]">
-      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
+    <div class="flex w-full h-[76vh]">
+      <BaseTable
+        :headers="headers"
+        :datalist="data"
+        :is-loading="isLoading"
+        :pagination="pagination"
+        @change-page-event="fetchProducts"
+        @change-per-page-event="(val: number) => fetchProducts()"
+      >
         <template #1="{ data }">
           <span> {{ data }} </span>
         </template>
@@ -27,8 +34,10 @@
 </template>
 
 <script setup lang="ts">
+import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
+import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import { useProductsStore } from '@/stores/products'
 import dayjs from 'dayjs'
 import { onMounted, ref, type Ref } from 'vue'
@@ -38,11 +47,32 @@ const isLoading: Ref<boolean> = ref(false)
 const headers = ref(['ID', 'Title', 'Category', 'Price', 'Description', 'Created At', 'Updated At'])
 const data: Ref<(string | number)[][]> = ref([])
 
+const perPageOptions: Ref<IOptions[]> = ref([
+  ...new Array(5).fill('').map((_, index) => {
+    return { key: String(index + 1), value: String(index + 1) }
+  })
+])
+
+const pagination: Ref<IBaseTablePagination> = ref({
+  page: 1,
+  perPage: 10,
+  perPageOptions: perPageOptions
+})
+
 onMounted(async () => {
+  await fetchProducts()
+})
+
+const fetchProducts = async () => {
   isLoading.value = true
 
   await productsStore.dispatchGetProducts()
+  tableMapper()
 
+  isLoading.value = false
+}
+
+const tableMapper = () => {
   data.value = productsStore.products.map((p) => {
     return [
       p.id,
@@ -54,7 +84,5 @@ onMounted(async () => {
       dayjs(p.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
     ]
   })
-
-  isLoading.value = false
-})
+}
 </script>

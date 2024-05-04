@@ -8,7 +8,14 @@
     </div>
 
     <div class="flex w-full h-[72vh]">
-      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
+      <BaseTable
+        :headers="headers"
+        :datalist="data"
+        :is-loading="isLoading"
+        :pagination="pagination"
+        @change-page-event="fetchCategories"
+        @change-per-page-event="(val: number) => fetchCategories()"
+      >
         <template #2="{ data }">
           <div class="truncate max-w-[28rem]">
             {{ data }}
@@ -23,8 +30,10 @@
 </template>
 
 <script setup lang="ts">
+import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
+import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
 import dayjs from 'dayjs'
@@ -35,11 +44,22 @@ const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At'])
 const data: Ref<(string | number)[][]> = ref([])
 const isLoading: Ref<boolean> = ref(false)
 
+const perPageOptions: Ref<IOptions[]> = ref([
+  ...new Array(5).fill('').map((_, index) => {
+    return { key: String(index + 1), value: String(index + 1) }
+  })
+])
+
+const pagination: Ref<IBaseTablePagination> = ref({
+  page: 1,
+  perPage: 10,
+  perPageOptions: perPageOptions
+})
+
 onMounted(async () => {
   isLoading.value = true
   await categoriesStore.dispatchGetCategories()
 
-  // map data to show in the table
   data.value = categoriesStore.categories.map((c: ICategory) => {
     return [
       c.id,
@@ -51,4 +71,23 @@ onMounted(async () => {
   })
   isLoading.value = false
 })
+
+const fetchCategories = async () => {
+  isLoading.value = true
+  await categoriesStore.dispatchGetCategories()
+  tableMapper()
+  isLoading.value = false
+}
+
+const tableMapper = () => {
+  data.value = categoriesStore.categories.map((c: ICategory) => {
+    return [
+      c.id,
+      c.name,
+      c.image,
+      dayjs(c.creationAt).format('YYYY-MM-DD HH:mm:ss Z'),
+      dayjs(c.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
+    ]
+  })
+}
 </script>
