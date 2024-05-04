@@ -8,14 +8,7 @@
     </div>
 
     <div class="flex flex-col w-full h-[76vh]">
-      <BaseTable
-        :headers="headers"
-        :datalist="data"
-        :is-loading="isLoading"
-        :pagination="pagination"
-        @change-page-event="fetchProducts"
-        @change-per-page-event="(val: number) => fetchProducts()"
-      >
+      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
         <template #1="{ data }">
           <span> {{ data }} </span>
         </template>
@@ -31,8 +24,9 @@
       </BaseTable>
       <BaseTablePagination
         :per-page-options="pagination.perPageOptions"
-        @change-page-event="fetchProducts"
-        @change-per-page-event="(val: number) => fetchProducts()"
+        @prev-page-event="handleChangePage('prev')"
+        @next-page-event="handleChangePage('next')"
+        @change-per-page-event="(val: number) => handleChangePerPage(val)"
       />
     </div>
   </div>
@@ -46,40 +40,14 @@ import type { IBaseTablePagination } from '@/components/table/BaseTablePaginatio
 import BaseTablePagination from '@/components/table/BaseTablePagination.vue'
 import { useProductsStore } from '@/stores/products'
 import dayjs from 'dayjs'
-import { onMounted, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 
 const productsStore = useProductsStore()
 const isLoading: Ref<boolean> = ref(false)
 const headers = ref(['ID', 'Title', 'Category', 'Price', 'Description', 'Created At', 'Updated At'])
-const data: Ref<(string | number)[][]> = ref([])
 
-const perPageOptions: Ref<IOptions[]> = ref([
-  ...new Array(5).fill('').map((_, index) => {
-    return { key: String(index + 1), value: String(index + 1) }
-  })
-])
-
-const pagination: Ref<IBaseTablePagination> = ref({
-  page: 1,
-  perPage: 10,
-  perPageOptions: perPageOptions
-})
-
-onMounted(async () => {
-  await fetchProducts()
-})
-
-const fetchProducts = async () => {
-  isLoading.value = true
-
-  await productsStore.dispatchGetProducts()
-  tableMapper()
-
-  isLoading.value = false
-}
-
-const tableMapper = () => {
-  data.value = productsStore.products.map((p) => {
+const data: ComputedRef<(string | number)[][]> = computed(() => {
+  return productsStore.products.map((p) => {
     return [
       p.id,
       p.title,
@@ -90,5 +58,46 @@ const tableMapper = () => {
       dayjs(p.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
     ]
   })
+})
+
+const perPageOptions: Ref<IOptions[]> = ref([
+  ...new Array(3).fill('').map((_, index) => {
+    return { key: String((index + 1) * 5), value: String((index + 1) * 5) }
+  })
+])
+
+const pagination: Ref<IBaseTablePagination> = ref({
+  page: 1,
+  perPage: Number(perPageOptions.value[0].key),
+  perPageOptions: perPageOptions
+})
+
+onMounted(async () => {
+  await fetchProducts()
+})
+
+const fetchProducts = async () => {
+  isLoading.value = true
+
+  await productsStore.dispatchGetProducts({
+    offset: (pagination.value.page - 1) * pagination.value.perPage,
+    limit: pagination.value.perPage
+  })
+
+  isLoading.value = false
+}
+
+const handleChangePage = (direction: 'prev' | 'next') => {
+  if (direction === 'prev') {
+    if (pagination.value.page > 1) pagination.value.page--
+  } else if (direction === 'next') {
+    if (productsStore.products.length < pagination.value.perPage) pagination.value.page++
+  }
+  fetchProducts()
+}
+
+const handleChangePerPage = (perPageVal: number) => {
+  pagination.value.perPage = perPageVal
+  fetchProducts()
 }
 </script>
