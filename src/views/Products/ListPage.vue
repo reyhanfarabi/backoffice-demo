@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-8 max-h-[80vh]">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Products</h1>
-      <BaseButton>
+      <BaseButton type="filled">
         <span class="text-sm font-semibold">New Product</span>
       </BaseButton>
     </div>
