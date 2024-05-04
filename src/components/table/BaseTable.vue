@@ -49,16 +49,24 @@
         </tr>
       </tbody>
     </table>
+
+    <BaseTablePagination
+      :per-page-options="pagination.perPageOptions"
+      @change-page-event="$emit('changePageEvent')"
+      @change-per-page-event="(val: number) => $emit('changePerPageEvent', val)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import LoadingSpinner from '../loadings/LoadingSpinner.vue'
+import BaseTablePagination, { type IBaseTablePagination } from './BaseTablePagination.vue'
 
 export interface IBaseTableProps {
   headers: string[]
   datalist: any[][]
   isLoading: boolean
+  pagination: IBaseTablePagination
 }
 
 const props = withDefaults(defineProps<IBaseTableProps>(), {
