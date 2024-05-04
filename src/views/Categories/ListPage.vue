@@ -8,14 +8,8 @@
     </div>
 
     <div class="flex w-full h-[72vh]">
-      <BaseTable
-        :headers="headers"
-        :datalist="data"
-        :is-loading="isLoading"
-        :pagination="pagination"
-        @change-page-event="fetchCategories"
-        @change-per-page-event="(val: number) => fetchCategories()"
-      >
+      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading" :pagination="pagination"
+        @change-page-event="fetchCategories" @change-per-page-event="(val: number) => fetchCategories()">
         <template #2="{ data }">
           <div class="truncate max-w-[28rem]">
             {{ data }}
@@ -57,19 +51,7 @@ const pagination: Ref<IBaseTablePagination> = ref({
 })
 
 onMounted(async () => {
-  isLoading.value = true
-  await categoriesStore.dispatchGetCategories()
-
-  data.value = categoriesStore.categories.map((c: ICategory) => {
-    return [
-      c.id,
-      c.name,
-      c.image,
-      dayjs(c.creationAt).format('YYYY-MM-DD HH:mm:ss Z'),
-      dayjs(c.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
-    ]
-  })
-  isLoading.value = false
+  await fetchCategories()
 })
 
 const fetchCategories = async () => {
