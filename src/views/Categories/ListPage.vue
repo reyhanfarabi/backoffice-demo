@@ -8,8 +8,7 @@
     </div>
 
     <div class="flex w-full h-[72vh]">
-      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading" :pagination="pagination"
-        @change-page-event="fetchCategories" @change-per-page-event="(val: number) => fetchCategories()">
+      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
         <template #2="{ data }">
           <div class="truncate max-w-[28rem]">
             {{ data }}
@@ -24,10 +23,8 @@
 </template>
 
 <script setup lang="ts">
-import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
-import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
 import dayjs from 'dayjs'
@@ -37,18 +34,6 @@ const categoriesStore = useCategoriesStore()
 const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At'])
 const data: Ref<(string | number)[][]> = ref([])
 const isLoading: Ref<boolean> = ref(false)
-
-const perPageOptions: Ref<IOptions[]> = ref([
-  ...new Array(5).fill('').map((_, index) => {
-    return { key: String(index + 1), value: String(index + 1) }
-  })
-])
-
-const pagination: Ref<IBaseTablePagination> = ref({
-  page: 1,
-  perPage: 10,
-  perPageOptions: perPageOptions
-})
 
 onMounted(async () => {
   await fetchCategories()

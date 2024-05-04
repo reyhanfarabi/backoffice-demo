@@ -7,7 +7,7 @@
       </BaseButton>
     </div>
 
-    <div class="flex w-full h-[76vh]">
+    <div class="flex flex-col w-full h-[76vh]">
       <BaseTable
         :headers="headers"
         :datalist="data"
@@ -29,6 +29,11 @@
           <span class="flex justify-center p-4">No products Found</span>
         </template>
       </BaseTable>
+      <BaseTablePagination
+        :per-page-options="pagination.perPageOptions"
+        @change-page-event="fetchProducts"
+        @change-per-page-event="(val: number) => fetchProducts()"
+      />
     </div>
   </div>
 </template>
@@ -38,6 +43,7 @@ import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
+import BaseTablePagination from '@/components/table/BaseTablePagination.vue'
 import { useProductsStore } from '@/stores/products'
 import dayjs from 'dayjs'
 import { onMounted, ref, type Ref } from 'vue'
