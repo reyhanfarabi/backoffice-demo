@@ -23,6 +23,8 @@
         </template>
       </BaseTable>
       <BaseTablePagination
+        :page="pagination.page"
+        :per-page="pagination.perPage"
         :per-page-options="pagination.perPageOptions"
         @prev-page-event="handleChangePage('prev')"
         @next-page-event="handleChangePage('next')"
@@ -89,11 +91,19 @@ const fetchProducts = async () => {
 
 const handleChangePage = (direction: 'prev' | 'next') => {
   if (direction === 'prev') {
-    if (pagination.value.page > 1) pagination.value.page--
+    if (pagination.value.page > 1) {
+      pagination.value.page--
+      fetchProducts()
+    }
   } else if (direction === 'next') {
-    if (productsStore.products.length < pagination.value.perPage) pagination.value.page++
+    if (
+      productsStore.products.length < pagination.value.perPage &&
+      productsStore.products.length !== 0
+    ) {
+      pagination.value.page++
+      fetchProducts()
+    }
   }
-  fetchProducts()
 }
 
 const handleChangePerPage = (perPageVal: number) => {
