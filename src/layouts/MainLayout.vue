@@ -6,7 +6,7 @@
 
     <div class="flex flex-row flex-grow">
       <NavigationSidebar class="w-full" />
-      <main class="p-8 min-w-[86vw]">
+      <main class="p-8 min-w-[86vw] max-h-[94vh] overflow-y-scroll">
         <slot />
       </main>
     </div>

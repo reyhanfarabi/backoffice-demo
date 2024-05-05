@@ -1,7 +1,7 @@
 <template>
   <div class="h-full w-full overflow-x-auto text-sm">
     <table class="w-full">
-      <thead class="bg-neutral-200 dark:bg-neutral-700 sticky top-0">
+      <thead class="bg-neutral-200 dark:bg-neutral-700">
         <tr>
           <th
             scope="col"
@@ -49,16 +49,29 @@
         </tr>
       </tbody>
     </table>
+
+    <BaseTablePagination
+      v-if="pagination"
+      :page="pagination.page"
+      :per-page="pagination.perPage"
+      :per-page-options="pagination.perPageOptions"
+      @prev-page-event="$emit('prevPageEvent')"
+      @next-page-event="$emit('nextPageEvent')"
+      @change-per-page-event="(val: number) => $emit('changePerPageEvent', val)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import LoadingSpinner from '../loadings/LoadingSpinner.vue'
+import type { IBaseTablePagination } from './BaseTablePagination.vue'
+import BaseTablePagination from './BaseTablePagination.vue'
 
 export interface IBaseTableProps {
   headers: string[]
   datalist: any[][]
   isLoading: boolean
+  pagination?: IBaseTablePagination
 }
 
 const props = withDefaults(defineProps<IBaseTableProps>(), {

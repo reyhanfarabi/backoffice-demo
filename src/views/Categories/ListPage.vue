@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 max-h-[80vh]">
+  <div class="flex flex-col gap-8 pb-20">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Categories</h1>
       <BaseButton type="filled">
@@ -7,7 +7,7 @@
       </BaseButton>
     </div>
 
-    <div class="flex w-full h-[72vh]">
+    <div class="flex w-full">
       <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
         <template #2="{ data }">
           <div class="truncate max-w-[28rem]">

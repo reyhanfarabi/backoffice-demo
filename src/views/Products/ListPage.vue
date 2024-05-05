@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 max-h-[80vh]">
+  <div class="flex flex-col gap-8">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Products</h1>
       <BaseButton type="filled">
@@ -7,8 +7,16 @@
       </BaseButton>
     </div>
 
-    <div class="flex flex-col w-full h-[76vh]">
-      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
+    <div class="flex flex-col w-full">
+      <BaseTable
+        :headers="headers"
+        :datalist="data"
+        :is-loading="isLoading"
+        :pagination="pagination"
+        @prev-page-event="handleChangePage('prev')"
+        @next-page-event="handleChangePage('next')"
+        @change-per-page-event="(val: number) => handleChangePerPage(val)"
+      >
         <template #1="{ data }">
           <span> {{ data }} </span>
         </template>
@@ -22,14 +30,6 @@
           <span class="flex justify-center p-4">No products Found</span>
         </template>
       </BaseTable>
-      <BaseTablePagination
-        :page="pagination.page"
-        :per-page="pagination.perPage"
-        :per-page-options="pagination.perPageOptions"
-        @prev-page-event="handleChangePage('prev')"
-        @next-page-event="handleChangePage('next')"
-        @change-per-page-event="(val: number) => handleChangePerPage(val)"
-      />
     </div>
   </div>
 </template>
@@ -39,7 +39,6 @@ import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
-import BaseTablePagination from '@/components/table/BaseTablePagination.vue'
 import { useProductsStore } from '@/stores/products'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
@@ -63,9 +62,9 @@ const data: ComputedRef<(string | number)[][]> = computed(() => {
 })
 
 const perPageOptions: Ref<IOptions[]> = ref([
-  ...new Array(3).fill('').map((_, index) => {
-    return { key: String((index + 1) * 5), value: String((index + 1) * 5) }
-  })
+  { key: '10', value: '10' },
+  { key: '15', value: '15' },
+  { key: '20', value: '20' }
 ])
 
 const pagination: Ref<IBaseTablePagination> = ref({
