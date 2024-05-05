@@ -96,7 +96,7 @@ const handleChangePage = (direction: 'prev' | 'next') => {
     }
   } else if (direction === 'next') {
     if (
-      productsStore.products.length < pagination.value.perPage &&
+      productsStore.products.length <= pagination.value.perPage &&
       productsStore.products.length !== 0
     ) {
       pagination.value.page++
