@@ -4,6 +4,5 @@ export interface IOptions {
 }
 
 export interface IQueryParams {
-  offset: number
-  limit: number
+  [k: string]: string | number
 }
