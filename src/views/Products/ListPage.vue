@@ -7,6 +7,25 @@
       </BaseButton>
     </div>
 
+    <div class="flex flex-col text-sm gap-2">
+      <span class="font-bold">Filters by</span>
+      <div
+        class="flex flex-row p-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
+      >
+        <div class="flex flex-col gap-2">
+          <label for="filterByCategory">Category</label>
+          <BaseDropdown
+            id="filterByCategory"
+            class="w-56"
+            :options="categoriesOptions"
+            @change="
+              (event: Event) => handleChangeCategory((event.target as HTMLSelectElement).value)
+            "
+          />
+        </div>
+      </div>
+    </div>
+
     <div class="flex flex-col w-full">
       <BaseTable
         :headers="headers"
@@ -35,15 +54,19 @@
 </template>
 
 <script setup lang="ts">
+import type { IQueryParams } from '@/common/types'
 import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
+import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
+import { useCategoriesStore } from '@/stores/categories'
 import { useProductsStore } from '@/stores/products'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 
 const productsStore = useProductsStore()
+const categoriesStore = useCategoriesStore()
 const isLoading: Ref<boolean> = ref(false)
 const headers = ref(['ID', 'Title', 'Category', 'Price', 'Description', 'Created At', 'Updated At'])
 
@@ -61,6 +84,22 @@ const data: ComputedRef<(string | number)[][]> = computed(() => {
   })
 })
 
+const categoriesOptions: ComputedRef<IOptions[]> = computed(() => {
+  return [
+    { key: 'all', value: 'All' },
+    ...categoriesStore.categories.map((c) => {
+      return {
+        key: String(c.id),
+        value: c.name
+      }
+    })
+  ]
+})
+
+const filters: Ref<Record<string, string>> = ref({
+  categoryId: categoriesOptions.value[0].key
+})
+
 const perPageOptions: Ref<IOptions[]> = ref([
   { key: '10', value: '10' },
   { key: '15', value: '15' },
@@ -75,16 +114,29 @@ const pagination: Ref<IBaseTablePagination> = ref({
 
 onMounted(async () => {
   await fetchProducts()
+  await fetchCategories()
 })
 
 const fetchProducts = async () => {
   isLoading.value = true
 
-  await productsStore.dispatchGetProducts({
+  const queryParams: Ref<IQueryParams> = ref({
     offset: (pagination.value.page - 1) * pagination.value.perPage,
     limit: pagination.value.perPage
   })
 
+  if (filters.value.categoryId !== categoriesOptions.value[0].key) {
+    queryParams.value['categoryId'] = filters.value.categoryId
+  }
+
+  await productsStore.dispatchGetProducts(queryParams.value)
+
+  isLoading.value = false
+}
+
+const fetchCategories = async () => {
+  isLoading.value = true
+  await categoriesStore.dispatchGetCategories()
   isLoading.value = false
 }
 
@@ -107,6 +159,11 @@ const handleChangePage = (direction: 'prev' | 'next') => {
 
 const handleChangePerPage = (perPageVal: number) => {
   pagination.value.perPage = perPageVal
+  fetchProducts()
+}
+
+const handleChangeCategory = (categoryId: string) => {
+  filters.value.categoryId = categoryId
   fetchProducts()
 }
 </script>
