@@ -1,7 +1,7 @@
 <template>
   <div class="h-full w-full overflow-x-auto text-sm">
     <table class="w-full">
-      <thead class="bg-neutral-200 dark:bg-neutral-700">
+      <thead class="bg-neutral-300 dark:bg-neutral-700">
         <tr>
           <th
             scope="col"

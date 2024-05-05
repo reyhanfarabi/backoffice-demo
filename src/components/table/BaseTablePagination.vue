@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-end items-center text-sm bg-neutral-200 dark:bg-neutral-700 rounded px-3 py-2"
+    class="flex justify-end items-center text-sm bg-neutral-300 dark:bg-neutral-700 rounded px-3 py-2"
   >
     <div class="flex items-center gap-8">
       <div class="flex items-center gap-2">
