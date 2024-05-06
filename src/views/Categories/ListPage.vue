@@ -24,7 +24,7 @@
                 }
               "
             >
-              <i class="pi pi-ellipsis-h text-white" />
+              <i class="pi pi-ellipsis-h" />
             </BaseButton>
             <BaseButton
               type="vanilla"
@@ -34,7 +34,7 @@
                 }
               "
             >
-              <i class="pi pi-pencil text-white" />
+              <i class="pi pi-pencil" />
             </BaseButton>
             <BaseButton
               class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
