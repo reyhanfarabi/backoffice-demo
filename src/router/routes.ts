@@ -1,3 +1,4 @@
+import CategoriesDetailPage from '@/views/Categories/DetailPage.vue'
 import CategoriesListPage from '@/views/Categories/ListPage.vue'
 import MainView from '@/views/MainView.vue'
 import ProductsListPage from '@/views/Products/ListPage.vue'
@@ -64,7 +65,18 @@ export const routes: IRoute[] = [
     meta: {
       showChildRoute: false
     },
-    children: []
+    children: [
+      {
+        path: '/',
+        name: 'Categories List',
+        component: CategoriesListPage
+      },
+      {
+        path: '/detail/:id',
+        name: 'Categories Detail',
+        component: CategoriesDetailPage
+      }
+    ]
   },
   {
     path: '/products',
