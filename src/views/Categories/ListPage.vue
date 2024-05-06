@@ -20,7 +20,7 @@
               type="vanilla"
               @click="
                 () => {
-                  console.log(data)
+                  $router.push({ name: 'Categories Detail', params: { id: data } })
                 }
               "
             >

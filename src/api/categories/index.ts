@@ -5,6 +5,11 @@ const getCategories = async () => {
   return await apiService.get(endpoints.categories)
 }
 
+const getCategoryById = async (id: number) => {
+  return await apiService.get(`${endpoints.categories}/${id}`)
+}
+
 export default {
-  getCategories
+  getCategories,
+  getCategoryById
 }
