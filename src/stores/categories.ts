@@ -31,10 +31,23 @@ export const useCategoriesStore = defineStore('categories', () => {
     }
   }
 
+  const deleteCategory = async (id: number) => {
+    isLoading.value = true
+
+    try {
+      await API.categories.deleteCategory(id)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     categories,
     isLoading,
     dispatchGetCategories,
-    getCategoryById
+    getCategoryById,
+    deleteCategory
   }
 })
