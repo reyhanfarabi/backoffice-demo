@@ -14,6 +14,40 @@
             {{ data }}
           </div>
         </template>
+        <template #5="{ data }">
+          <div class="flex justify-center gap-2">
+            <BaseButton
+              type="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Categories Detail', params: { id: data } })
+                }
+              "
+            >
+              <i class="pi pi-ellipsis-h text-white" />
+            </BaseButton>
+            <BaseButton
+              type="vanilla"
+              @click="
+                () => {
+                  console.log(data)
+                }
+              "
+            >
+              <i class="pi pi-pencil text-white" />
+            </BaseButton>
+            <BaseButton
+              class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
+              @click="
+                () => {
+                  console.log(data)
+                }
+              "
+            >
+              <i class="pi pi-trash text-white" />
+            </BaseButton>
+          </div>
+        </template>
         <template #empty>
           <span class="flex justify-center p-4">No categories Found</span>
         </template>
@@ -31,7 +65,7 @@ import dayjs from 'dayjs'
 import { onMounted, ref, type Ref } from 'vue'
 
 const categoriesStore = useCategoriesStore()
-const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At'])
+const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At', ''])
 const data: Ref<(string | number)[][]> = ref([])
 const isLoading: Ref<boolean> = ref(false)
 
@@ -53,7 +87,8 @@ const tableMapper = () => {
       c.name,
       c.image,
       dayjs(c.creationAt).format('YYYY-MM-DD HH:mm:ss Z'),
-      dayjs(c.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
+      dayjs(c.updatedAt).format('YYYY-MM-DD HH:mm:ss Z'),
+      c.id
     ]
   })
 }
