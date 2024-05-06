@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 export interface IBaseButtonProps {
-  type: 'filled' | 'outlined' | 'nostyle'
+  type: 'filled' | 'outlined' | 'nostyle' | 'vanilla'
 }
 
 const props = withDefaults(defineProps<IBaseButtonProps>(), {
@@ -20,10 +20,14 @@ const props = withDefaults(defineProps<IBaseButtonProps>(), {
 }
 
 .outlined {
-  @apply px-4 py-2 rounded text-neutral-900 dark:text-neutral-100 hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10 border border-neutral-800/20 dark:border-neutral-200/20;
+  @apply p-2 rounded text-neutral-900 dark:text-neutral-100 hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10 border border-neutral-800/20 dark:border-neutral-200/20;
 }
 
 .nostyle {
   @apply text-neutral-900 dark:text-neutral-100;
+}
+
+.vanilla {
+  @apply p-2 rounded hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10 border border-neutral-800/20;
 }
 </style>
