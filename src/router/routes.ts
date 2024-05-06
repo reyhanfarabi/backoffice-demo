@@ -32,31 +32,6 @@ export const routes: IRoute[] = [
     },
     children: []
   },
-  // {
-  //   path: '/page1',
-  //   name: 'Page 1',
-  //   icon: 'pi-clipboard',
-  //   component: TestPage1,
-  //   children: [
-  //     {
-  //       path: '/',
-  //       name: 'Page 1',
-  //       component: TestPage1
-  //     },
-  //     {
-  //       path: '/child1',
-  //       name: 'Child 1',
-  //       component: TestPage1Child1
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/page2',
-  //   name: 'Page 2',
-  //   component: TestPage2,
-  //   icon: 'pi-file-plus',
-  //   children: []
-  // },
   {
     path: '/categories',
     name: 'Categories',
