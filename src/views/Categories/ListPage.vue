@@ -24,7 +24,7 @@
                 }
               "
             >
-              <i class="pi pi-ellipsis-h text-white" />
+              <i class="pi pi-ellipsis-h" />
             </BaseButton>
             <BaseButton
               type="vanilla"
@@ -34,13 +34,14 @@
                 }
               "
             >
-              <i class="pi pi-pencil text-white" />
+              <i class="pi pi-pencil" />
             </BaseButton>
             <BaseButton
               class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
               @click="
                 () => {
-                  console.log(data)
+                  isDeleteModalVisible = true
+                  deleteId = data
                 }
               "
             >
@@ -53,11 +54,30 @@
         </template>
       </BaseTable>
     </div>
+
+    <BaseModals v-if="isDeleteModalVisible" @close-modal-event="handleCloseDeleteModal">
+      <LoadingSpinner v-if="categoriesStore.isLoading" />
+
+      <div v-else class="flex flex-col gap-4 p-4">
+        <span
+          >Are you sure you want to delete
+          <span class="font-semibold">{{ getCategoryNameById() }}</span> category?</span
+        >
+        <div class="flex flex-row gap-2">
+          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+            >Cancel</BaseButton
+          >
+          <BaseButton class="flex-1" type="outlined" @click="handleDeleteCategory">Yes</BaseButton>
+        </div>
+      </div>
+    </BaseModals>
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/buttons/BaseButton.vue'
+import LoadingSpinner from '@/components/loadings/LoadingSpinner.vue'
+import BaseModals from '@/components/modals/BaseModals.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
@@ -68,6 +88,8 @@ const categoriesStore = useCategoriesStore()
 const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At', ''])
 const data: Ref<(string | number)[][]> = ref([])
 const isLoading: Ref<boolean> = ref(false)
+const isDeleteModalVisible: Ref<boolean> = ref(false)
+const deleteId: Ref<number | null> = ref(null)
 
 onMounted(async () => {
   await fetchCategories()
@@ -91,5 +113,23 @@ const tableMapper = () => {
       c.id
     ]
   })
+}
+
+const handleCloseDeleteModal = (): void => {
+  deleteId.value = null
+  isDeleteModalVisible.value = false
+}
+
+const getCategoryNameById = (): string => {
+  return categoriesStore.categories.find((c) => c.id === deleteId.value)?.name || ''
+}
+
+const handleDeleteCategory = async () => {
+  if (deleteId.value) {
+    await categoriesStore.deleteCategory(deleteId.value)
+    isDeleteModalVisible.value = false
+  }
+
+  await fetchCategories()
 }
 </script>

@@ -3,7 +3,7 @@
     <BaseButton
       class="flex items-center gap-2 w-fit text-xs"
       type="outlined"
-      @click="$router.push({ name: 'Categories List' })"
+      @click="handleBackToListPage"
     >
       <i class="pi pi-arrow-left" />
       <span class="text-sm">Back</span>
@@ -26,7 +26,7 @@
           class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
           @click="
             () => {
-              console.log($route.params.id)
+              isDeleteModalVisible = true
             }
           "
         >
@@ -85,6 +85,23 @@
         </div>
       </div>
     </div>
+
+    <BaseModals v-if="isDeleteModalVisible" @close-modal-event="handleCloseDeleteModal">
+      <LoadingSpinner v-if="categoriesStore.isLoading" />
+
+      <div v-else class="flex flex-col gap-4 p-4">
+        <span
+          >Are you sure you want to delete
+          <span class="font-semibold">{{ data?.name }}</span> category?</span
+        >
+        <div class="flex flex-row gap-2">
+          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+            >Cancel</BaseButton
+          >
+          <BaseButton class="flex-1" type="outlined" @click="handleDeleteCategory">Yes</BaseButton>
+        </div>
+      </div>
+    </BaseModals>
   </div>
 </template>
 
@@ -92,17 +109,37 @@
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseInput from '@/components/inputs/BaseInput.vue'
 import LoadingSpinner from '@/components/loadings/LoadingSpinner.vue'
+import BaseModals from '@/components/modals/BaseModals.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
 import dayjs from 'dayjs'
 import { onMounted, ref, type Ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const categoriesStore = useCategoriesStore()
 const data: Ref<ICategory | undefined> = ref()
+const isDeleteModalVisible: Ref<boolean> = ref(false)
 
 onMounted(async () => {
   data.value = await categoriesStore.getCategoryById(Number(route.params.id))
 })
+
+const handleCloseDeleteModal = (): void => {
+  isDeleteModalVisible.value = false
+}
+
+const handleDeleteCategory = async () => {
+  if (route.params.id) {
+    await categoriesStore.deleteCategory(Number(route.params.id))
+    isDeleteModalVisible.value = false
+  }
+
+  await handleBackToListPage()
+}
+
+const handleBackToListPage = () => {
+  router.push({ name: 'Categories List' })
+}
 </script>
