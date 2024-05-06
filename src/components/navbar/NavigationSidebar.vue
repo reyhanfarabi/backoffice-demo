@@ -9,14 +9,19 @@
           :class="[
             {
               'bg-teal-500 dark:bg-teal-600 hover:bg-teal-500/80 dark:hover:bg-teal-600/80':
-                $route.path === route.path
+                $route.path === route.path || route.children.find((c) => c.name === $route.name)
             }
           ]"
         >
           <i class="pi" :class="[route.icon, { 'text-white': $route.path === route.path }]" />
           <span
             class="text-sm text-neutral-700 dark:text-neutral-400"
-            :class="[{ 'text-white dark:text-white': $route.path === route.path }]"
+            :class="[
+              {
+                'text-white dark:text-white':
+                  $route.path === route.path || route.children.find((c) => c.name === $route.name)
+              }
+            ]"
           >
             {{ route.name }}</span
           >
