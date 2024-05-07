@@ -1,5 +1,6 @@
 import CategoriesAddPage from '@/views/Categories/AddPage.vue'
 import CategoriesDetailPage from '@/views/Categories/DetailPage.vue'
+import CategoriesEditPage from '@/views/Categories/EditPage.vue'
 import CategoriesListPage from '@/views/Categories/ListPage.vue'
 import MainView from '@/views/MainView.vue'
 import ProductsListPage from '@/views/Products/ListPage.vue'
@@ -56,6 +57,11 @@ export const routes: IRoute[] = [
         path: '/detail/:id',
         name: 'Categories Detail',
         component: CategoriesDetailPage
+      },
+      {
+        path: '/edit/:id',
+        name: 'Categories Edit',
+        component: CategoriesEditPage
       }
     ]
   },

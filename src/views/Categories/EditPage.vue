@@ -10,7 +10,7 @@
     </BaseButton>
 
     <div class="flex flex-row justify-between items-center">
-      <h1 class="text-2xl font-bold">Categories</h1>
+      <h1 class="text-2xl font-bold">Edit Categories</h1>
     </div>
 
     <div class="flex flex-col gap-4 p-4 rounded bg-neutral-200 dark:bg-neutral-800 w-1/2">
@@ -22,12 +22,12 @@
             type="text"
             name="nameField"
             id="name"
-            :value="newData.name"
+            :value="data.name"
             :is-error="$v.name.$error"
             :error-message="$v.name.$error ? $v.name.$errors[0].$message.toString() : ''"
             @change="
               (event: Event) => {
-                newData.name = (event.target as HTMLInputElement).value
+                data.name = (event.target as HTMLInputElement).value
               }
             "
           />
@@ -38,21 +38,21 @@
             <BaseInput
               class="w-96"
               type="text"
-              name="nameField"
-              id="name"
-              :value="newData.image"
+              name="imageField"
+              id="image"
+              :value="data.image"
               :is-error="$v.image.$error"
               :error-message="$v.image.$error ? $v.image.$errors[0].$message.toString() : ''"
               @change="
                 (event: Event) => {
-                  newData.image = (event.target as HTMLInputElement).value
+                  data.image = (event.target as HTMLInputElement).value
                 }
               "
             />
           </div>
           <img
-            v-if="newData.image && !$v.image.$error"
-            :src="newData.image"
+            v-if="data.image && !$v.image.$error"
+            :src="data.image"
             class="ml-28 w-36 rounded border border-neutral-300 dark:border-neutral-700"
             alt="New Category Image"
           />
@@ -72,8 +72,8 @@
   <BaseModals v-if="isConfirmModalVisible" @close-modal-event="handleCloseAddModal">
     <div class="flex flex-col gap-4 p-4">
       <span
-        >Are you sure you want to add
-        <span class="font-semibold">{{ newData.name }}</span> category?</span
+        >Are you sure you want to edit
+        <span class="font-semibold">{{ data.name }}</span> category?</span
       >
       <div class="flex flex-row gap-2">
         <BaseButton class="flex-1" type="filled" @click="handleCloseAddModal">Cancel</BaseButton>
@@ -90,20 +90,24 @@ import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseInput from '@/components/inputs/BaseInput.vue'
 import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
-import type { ICategoryPayload } from '@/interfaces/categories'
+import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
 import useVuelidate from '@vuelidate/core'
 import { helpers, minLength, required, url } from '@vuelidate/validators'
-import { ref, type Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, ref, type Ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
 const categoriesStore = useCategoriesStore()
 const isConfirmModalVisible: Ref<boolean> = ref(false)
 
-const newData: Ref<ICategoryPayload> = ref({
+const data: Ref<ICategory> = ref({
+  id: NaN,
   name: '',
-  image: ''
+  image: '',
+  creationAt: '',
+  updatedAt: ''
 })
 
 const rules = {
@@ -117,7 +121,11 @@ const rules = {
   }
 }
 
-const $v = useVuelidate(rules, newData)
+const $v = useVuelidate(rules, data)
+
+onMounted(async () => {
+  data.value = await categoriesStore.getCategoryById(Number(route.params.id))
+})
 
 const handleBackToListPage = () => {
   router.push({ name: 'Categories List' })
@@ -128,9 +136,9 @@ const handleSave = async () => {
   const result = await $v.value.$validate()
 
   if (result) {
-    await categoriesStore.addCategory({
-      name: newData.value.name.trim(),
-      image: newData.value.image.trim()
+    await categoriesStore.updateCategory(Number(route.params.id), {
+      name: data.value.name.trim(),
+      image: data.value.image.trim()
     })
     handleBackToListPage()
   }

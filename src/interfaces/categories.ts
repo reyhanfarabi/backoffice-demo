@@ -6,7 +6,7 @@ export interface ICategory {
   updatedAt: string
 }
 
-export interface ICategoryAddPayload {
+export interface ICategoryPayload {
   name: string
   image: string
 }

@@ -16,7 +16,7 @@
           type="vanilla"
           @click="
             () => {
-              console.log($route.params.id)
+              $router.push({ name: 'Categories Edit', params: { id: $route.params.id } })
             }
           "
         >
