@@ -1,5 +1,5 @@
 import { API } from '@/api'
-import type { ICategory } from '@/interfaces/categories'
+import type { ICategory, ICategoryPayload } from '@/interfaces/categories'
 import { defineStore } from 'pinia'
 import { ref, type Ref } from 'vue'
 
@@ -43,11 +43,37 @@ export const useCategoriesStore = defineStore('categories', () => {
     }
   }
 
+  const addCategory = async (payload: ICategoryPayload) => {
+    isLoading.value = true
+
+    try {
+      await API.categories.addCategory(payload)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const updateCategory = async (id: number, payload: ICategoryPayload) => {
+    isLoading.value = true
+
+    try {
+      await API.categories.updateCategory(id, payload)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     categories,
     isLoading,
     dispatchGetCategories,
     getCategoryById,
-    deleteCategory
+    deleteCategory,
+    addCategory,
+    updateCategory
   }
 })

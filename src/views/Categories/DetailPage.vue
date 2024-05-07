@@ -1,46 +1,47 @@
 <template>
   <div class="flex flex-col gap-8 pb-20">
-    <BaseButton
-      class="flex items-center gap-2 w-fit text-xs"
-      type="outlined"
-      @click="handleBackToListPage"
-    >
-      <i class="pi pi-arrow-left" />
-      <span class="text-sm">Back</span>
-    </BaseButton>
-
-    <div class="flex flex-row justify-between items-center">
-      <h1 class="text-2xl font-bold">Categories</h1>
-      <div class="flex gap-2">
-        <BaseButton
-          type="vanilla"
-          @click="
-            () => {
-              console.log($route.params.id)
-            }
-          "
-        >
-          <i class="pi pi-pencil text-white" />
-        </BaseButton>
-        <BaseButton
-          class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
-          @click="
-            () => {
-              isDeleteModalVisible = true
-            }
-          "
-        >
-          <i class="pi pi-trash text-white" />
-        </BaseButton>
+    <div class="flex flex-row w-full gap-4 items-center">
+      <BaseButton
+        class="flex items-center gap-2 w-fit text-xs"
+        type="outlined"
+        @click="handleBackToListPage"
+      >
+        <i class="pi pi-arrow-left" />
+      </BaseButton>
+      <div class="flex flex-row w-full justify-between">
+        <h1 class="text-2xl font-bold">Detail Categories</h1>
+        <div class="flex gap-2">
+          <BaseButton
+            type="vanilla"
+            @click="
+              () => {
+                $router.push({ name: 'Categories Edit', params: { id: $route.params.id } })
+              }
+            "
+          >
+            <i class="pi pi-pencil" />
+          </BaseButton>
+          <BaseButton
+            class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
+            @click="
+              () => {
+                isDeleteModalVisible = true
+              }
+            "
+          >
+            <i class="pi pi-trash text-white" />
+          </BaseButton>
+        </div>
       </div>
     </div>
 
-    <div class="p-4 rounded bg-neutral-200 dark:bg-neutral-800">
+    <div class="p-4 rounded shadow bg-white dark:bg-neutral-800 w-1/2">
       <LoadingSpinner v-if="categoriesStore.isLoading" />
 
-      <div v-else class="flex flex-col gap-4">
-        <div class="flex flex-row items-center">
+      <div v-else class="flex flex-col gap-4 text-sm">
+        <div class="flex flex-row items-center gap-2">
           <label class="w-28" for="categoryId">ID</label>
+          <span>:</span>
           <BaseInput
             class="w-16"
             type="text"
@@ -50,8 +51,9 @@
             :value="data?.id"
           />
         </div>
-        <div class="flex flex-row items-center">
+        <div class="flex flex-row items-center gap-2">
           <label class="w-28" for="name">Name</label>
+          <span>:</span>
           <BaseInput
             class="w-96"
             type="text"
@@ -61,8 +63,9 @@
             :value="data?.name"
           />
         </div>
-        <div class="flex flex-row items-center">
+        <div class="flex flex-row items-center gap-2">
           <label class="w-28" for="creationAt">Creation At</label>
+          <span>:</span>
           <BaseInput
             class="w-96"
             type="text"
@@ -72,8 +75,9 @@
             :value="dayjs(data?.creationAt).format('YYYY-MM-DD HH:mm:ss Z')"
           />
         </div>
-        <div class="flex flex-row items-center">
+        <div class="flex flex-row items-center gap-2">
           <label class="w-28" for="updatedAt">Updated At</label>
+          <span>:</span>
           <BaseInput
             class="w-96"
             type="text"
