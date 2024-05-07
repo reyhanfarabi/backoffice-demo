@@ -5,3 +5,8 @@ export interface ICategory {
   creationAt: string
   updatedAt: string
 }
+
+export interface ICategoryPayload {
+  name: string
+  image: string
+}
