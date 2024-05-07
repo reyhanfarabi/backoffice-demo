@@ -3,6 +3,7 @@
     <input
       class="px-2 py-1 rounded text-neutral-900 dark:text-neutral-100 bg-transparent border border-neutral-800/20 dark:border-neutral-200/20"
       :value="attrs.value"
+      :disabled="props.disabled"
     />
     <div
       v-if="props.isError"
@@ -20,11 +21,13 @@ import { useAttrs } from 'vue'
 export interface IBaseInputProps {
   isError: boolean
   errorMessage: string
+  disabled: boolean
 }
 
 const props = withDefaults(defineProps<IBaseInputProps>(), {
   isError: false,
-  errorMessage: 'Please enter a valid data'
+  errorMessage: 'Please enter a valid data',
+  disabled: false
 })
 
 const attrs = useAttrs()
