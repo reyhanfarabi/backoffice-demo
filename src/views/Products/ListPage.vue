@@ -34,6 +34,15 @@
             "
           />
         </div>
+        <div class="flex items-end">
+          <BaseButton
+            class="flex items-center px-2 py-1 rounded text-neutral-900 dark:text-neutral-100 hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10 border border-neutral-800/20 dark:border-neutral-200/20"
+            type="nostyle"
+            @click="resetFilter"
+          >
+            <span>Reset filter</span>
+          </BaseButton>
+        </div>
       </div>
     </div>
 
@@ -182,5 +191,14 @@ const handleChangePerPage = (perPageVal: number) => {
 const handleChangeCategory = (categoryId: string) => {
   filters.value.categoryId = categoryId
   fetchProducts()
+}
+
+const resetFilter = async () => {
+  filters.value = {
+    keyword: '',
+    categoryId: categoriesOptions.value[0].key
+  }
+
+  await fetchProducts()
 }
 </script>
