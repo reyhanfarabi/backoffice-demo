@@ -1,19 +1,17 @@
 <template>
   <div class="flex flex-col gap-8 pb-20">
-    <BaseButton
-      class="flex items-center gap-2 w-fit text-xs"
-      type="outlined"
-      @click="handleBackToListPage"
-    >
-      <i class="pi pi-arrow-left" />
-      <span class="text-sm">Back</span>
-    </BaseButton>
-
-    <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row items-center gap-4">
+      <BaseButton
+        class="flex items-center gap-2 w-fit text-xs"
+        type="outlined"
+        @click="handleBackToListPage"
+      >
+        <i class="pi pi-arrow-left" />
+      </BaseButton>
       <h1 class="text-2xl font-bold">Edit Categories</h1>
     </div>
 
-    <div class="flex flex-col gap-4 p-4 rounded bg-neutral-200 dark:bg-neutral-800 w-1/2">
+    <div class="flex flex-col gap-4 p-4 rounded bg-white dark:bg-neutral-800 w-1/2 text-sm shadow">
       <div class="flex flex-col gap-4">
         <div class="flex flex-row">
           <label class="w-28 p-1" for="name">Name</label>
