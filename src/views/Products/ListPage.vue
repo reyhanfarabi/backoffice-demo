@@ -13,11 +13,11 @@
         class="flex flex-row p-4 gap-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
       >
         <div class="flex flex-col gap-2">
-          <label for="filterByCategory">Search</label>
+          <label for="filterByTitle">Search</label>
           <BaseInput
             type="text"
             placeholder="Search by Title"
-            id="filterBySearch"
+            id="filterByTitle"
             class="w-56"
             v-model="filters.keyword"
             @change="fetchProducts"
