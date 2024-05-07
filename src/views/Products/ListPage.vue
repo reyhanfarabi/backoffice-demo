@@ -10,8 +10,30 @@
     <div class="flex flex-col text-sm gap-2">
       <span class="font-bold">Filters by</span>
       <div
-        class="flex flex-row p-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
+        class="flex flex-row p-4 gap-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
       >
+        <div class="flex flex-col gap-2">
+          <label for="filterByTitle">Search</label>
+          <BaseInput
+            type="text"
+            placeholder="Search by Title"
+            id="filterByTitle"
+            class="w-56"
+            v-model="filters.keyword"
+            @change="fetchProducts"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="filterByPrice">Price</label>
+          <BaseInput
+            type="number"
+            placeholder="Type Price Amount"
+            id="filterByPrice"
+            class="w-56"
+            v-model="filters.price"
+            @change="fetchProducts"
+          />
+        </div>
         <div class="flex flex-col gap-2">
           <label for="filterByCategory">Category</label>
           <BaseDropdown
@@ -22,6 +44,15 @@
               (event: Event) => handleChangeCategory((event.target as HTMLSelectElement).value)
             "
           />
+        </div>
+        <div class="flex items-end">
+          <BaseButton
+            class="flex items-center px-2 py-1 rounded text-neutral-900 dark:text-neutral-100 hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10 border border-neutral-800/20 dark:border-neutral-200/20"
+            type="nostyle"
+            @click="resetFilter"
+          >
+            <span>Reset filter</span>
+          </BaseButton>
         </div>
       </div>
     </div>
@@ -58,6 +89,7 @@ import type { IQueryParams } from '@/common/types'
 import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue'
+import BaseInput from '@/components/inputs/BaseInput.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import { useCategoriesStore } from '@/stores/categories'
@@ -96,7 +128,9 @@ const categoriesOptions: ComputedRef<IOptions[]> = computed(() => {
   ]
 })
 
-const filters: Ref<Record<string, string>> = ref({
+const filters: Ref<Record<string, string | number>> = ref({
+  keyword: '',
+  price: NaN,
   categoryId: categoriesOptions.value[0].key
 })
 
@@ -127,6 +161,14 @@ const fetchProducts = async () => {
 
   if (filters.value.categoryId !== categoriesOptions.value[0].key) {
     queryParams.value['categoryId'] = filters.value.categoryId
+  }
+
+  if (filters.value.keyword) {
+    queryParams.value['title'] = filters.value.keyword
+  }
+
+  if (filters.value.price) {
+    queryParams.value['price'] = filters.value.price
   }
 
   await productsStore.dispatchGetProducts(queryParams.value)
@@ -165,5 +207,15 @@ const handleChangePerPage = (perPageVal: number) => {
 const handleChangeCategory = (categoryId: string) => {
   filters.value.categoryId = categoryId
   fetchProducts()
+}
+
+const resetFilter = async () => {
+  filters.value = {
+    keyword: '',
+    price: NaN,
+    categoryId: categoriesOptions.value[0].key
+  }
+
+  await fetchProducts()
 }
 </script>
