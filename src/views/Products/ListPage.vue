@@ -24,6 +24,17 @@
           />
         </div>
         <div class="flex flex-col gap-2">
+          <label for="filterByPrice">Price</label>
+          <BaseInput
+            type="number"
+            placeholder="Type Price Amount"
+            id="filterByPrice"
+            class="w-56"
+            v-model="filters.price"
+            @change="fetchProducts"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
           <label for="filterByCategory">Category</label>
           <BaseDropdown
             id="filterByCategory"
@@ -117,8 +128,9 @@ const categoriesOptions: ComputedRef<IOptions[]> = computed(() => {
   ]
 })
 
-const filters: Ref<Record<string, string>> = ref({
+const filters: Ref<Record<string, string | number>> = ref({
   keyword: '',
+  price: NaN,
   categoryId: categoriesOptions.value[0].key
 })
 
@@ -153,6 +165,10 @@ const fetchProducts = async () => {
 
   if (filters.value.keyword) {
     queryParams.value['title'] = filters.value.keyword
+  }
+
+  if (filters.value.price) {
+    queryParams.value['price'] = filters.value.price
   }
 
   await productsStore.dispatchGetProducts(queryParams.value)
@@ -196,6 +212,7 @@ const handleChangeCategory = (categoryId: string) => {
 const resetFilter = async () => {
   filters.value = {
     keyword: '',
+    price: NaN,
     categoryId: categoriesOptions.value[0].key
   }
 
