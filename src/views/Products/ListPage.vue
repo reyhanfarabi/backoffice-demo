@@ -10,8 +10,19 @@
     <div class="flex flex-col text-sm gap-2">
       <span class="font-bold">Filters by</span>
       <div
-        class="flex flex-row p-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
+        class="flex flex-row p-4 gap-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
       >
+        <div class="flex flex-col gap-2">
+          <label for="filterByCategory">Search</label>
+          <BaseInput
+            type="text"
+            placeholder="Search by Title"
+            id="filterBySearch"
+            class="w-56"
+            v-model="filters.keyword"
+            @change="fetchProducts"
+          />
+        </div>
         <div class="flex flex-col gap-2">
           <label for="filterByCategory">Category</label>
           <BaseDropdown
@@ -58,6 +69,7 @@ import type { IQueryParams } from '@/common/types'
 import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue'
+import BaseInput from '@/components/inputs/BaseInput.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import { useCategoriesStore } from '@/stores/categories'
@@ -97,6 +109,7 @@ const categoriesOptions: ComputedRef<IOptions[]> = computed(() => {
 })
 
 const filters: Ref<Record<string, string>> = ref({
+  keyword: '',
   categoryId: categoriesOptions.value[0].key
 })
 
@@ -127,6 +140,10 @@ const fetchProducts = async () => {
 
   if (filters.value.categoryId !== categoriesOptions.value[0].key) {
     queryParams.value['categoryId'] = filters.value.categoryId
+  }
+
+  if (filters.value.keyword) {
+    queryParams.value['title'] = filters.value.keyword
   }
 
   await productsStore.dispatchGetProducts(queryParams.value)
