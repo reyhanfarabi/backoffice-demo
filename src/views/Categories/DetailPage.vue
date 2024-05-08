@@ -48,7 +48,7 @@
             name="categoryIdField"
             id="categoryId"
             disabled
-            :value="data?.id"
+            :model-value="data.id"
           />
         </div>
         <div class="flex flex-row items-center gap-2">
@@ -60,7 +60,7 @@
             name="nameField"
             id="name"
             disabled
-            :value="data?.name"
+            :model-value="data.name"
           />
         </div>
         <div class="flex flex-row items-center gap-2">
@@ -72,7 +72,7 @@
             name="creationAtField"
             id="creationAt"
             disabled
-            :value="dayjs(data?.creationAt).format('YYYY-MM-DD HH:mm:ss Z')"
+            :model-value="dayjs(data.creationAt).format('MMMM DD, YYYY HH:mm:ss Z')"
           />
         </div>
         <div class="flex flex-row items-center gap-2">
@@ -84,7 +84,7 @@
             name="updatedAtField"
             id="updatedAt"
             disabled
-            :value="dayjs(data?.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')"
+            :model-value="dayjs(data.updatedAt).format('MMMM DD, YYYY HH:mm:ss Z')"
           />
         </div>
       </div>
@@ -123,7 +123,13 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const categoriesStore = useCategoriesStore()
-const data: Ref<ICategory | undefined> = ref()
+const data: Ref<ICategory> = ref({
+  id: NaN,
+  name: '',
+  image: '',
+  creationAt: '',
+  updatedAt: ''
+})
 const isDeleteModalVisible: Ref<boolean> = ref(false)
 
 onMounted(async () => {
