@@ -35,10 +35,18 @@
       </div>
     </div>
 
-    <div class="p-4 rounded shadow bg-white dark:bg-neutral-800 w-1/2">
-      <LoadingSpinner v-if="categoriesStore.isLoading" />
+    <div class="flex flex-row gap-4">
+      <img
+        v-if="data.image"
+        :src="data.image"
+        class="aspect-square h-60 w-60 rounded border border-neutral-300 dark:border-neutral-700"
+        :alt="`${data.name} image`"
+      />
 
-      <div v-else class="flex flex-col gap-4 text-sm">
+      <div
+        v-if="!categoriesStore.isLoading"
+        class="flex flex-col justify-center w-full gap-4 p-4 rounded shadow text-sm bg-white dark:bg-neutral-800"
+      >
         <div class="flex flex-row items-center gap-2">
           <label class="w-28" for="categoryId">ID</label>
           <span>:</span>
@@ -91,9 +99,7 @@
     </div>
 
     <BaseModals v-if="isDeleteModalVisible" @close-modal-event="handleCloseDeleteModal">
-      <LoadingSpinner v-if="categoriesStore.isLoading" />
-
-      <div v-else class="flex flex-col gap-4 p-4">
+      <div class="flex flex-col gap-4 p-4">
         <span
           >Are you sure you want to delete
           <span class="font-semibold">{{ data?.name }}</span> category?</span
@@ -106,13 +112,14 @@
         </div>
       </div>
     </BaseModals>
+    <LoadingFullscreen v-if="categoriesStore.isLoading" />
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseInput from '@/components/inputs/BaseInput.vue'
-import LoadingSpinner from '@/components/loadings/LoadingSpinner.vue'
+import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
@@ -141,6 +148,8 @@ const handleCloseDeleteModal = (): void => {
 }
 
 const handleDeleteCategory = async () => {
+  handleCloseDeleteModal()
+
   if (route.params.id) {
     await categoriesStore.deleteCategory(Number(route.params.id))
     isDeleteModalVisible.value = false
