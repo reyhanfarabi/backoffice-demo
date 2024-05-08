@@ -76,6 +76,20 @@
         <template #4="{ data }">
           <span class="line-clamp-2 w-[32rem]"> {{ data }} </span>
         </template>
+        <template #7="{ data }">
+          <div class="flex justify-center gap-2">
+            <BaseButton
+              type="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Products Detail', params: { id: data } })
+                }
+              "
+            >
+              <i class="pi pi-ellipsis-h" />
+            </BaseButton>
+          </div>
+        </template>
         <template #empty>
           <span class="flex justify-center p-4">No products Found</span>
         </template>
@@ -100,7 +114,16 @@ import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 const productsStore = useProductsStore()
 const categoriesStore = useCategoriesStore()
 const isLoading: Ref<boolean> = ref(false)
-const headers = ref(['ID', 'Title', 'Category', 'Price', 'Description', 'Created At', 'Updated At'])
+const headers = ref([
+  'ID',
+  'Title',
+  'Category',
+  'Price',
+  'Description',
+  'Created At',
+  'Updated At',
+  ''
+])
 
 const data: ComputedRef<(string | number)[][]> = computed(() => {
   return productsStore.products.map((p) => {
@@ -111,7 +134,8 @@ const data: ComputedRef<(string | number)[][]> = computed(() => {
       p.price,
       p.description,
       dayjs(p.creationAt).format('YYYY-MM-DD HH:mm:ss Z'),
-      dayjs(p.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
+      dayjs(p.updatedAt).format('YYYY-MM-DD HH:mm:ss Z'),
+      p.id
     ]
   })
 })

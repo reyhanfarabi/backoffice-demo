@@ -8,6 +8,11 @@ const getProducts = async (params: IQueryParams) => {
   })
 }
 
+const getProductById = async (id: number) => {
+  return await apiService.get(`${endpoints.products}/${id}`)
+}
+
 export default {
-  getProducts
+  getProducts,
+  getProductById
 }

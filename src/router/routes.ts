@@ -3,6 +3,7 @@ import CategoriesDetailPage from '@/views/Categories/DetailPage.vue'
 import CategoriesEditPage from '@/views/Categories/EditPage.vue'
 import CategoriesListPage from '@/views/Categories/ListPage.vue'
 import MainView from '@/views/MainView.vue'
+import ProductsDetailPage from '@/views/Products/DetailPage.vue'
 import ProductsListPage from '@/views/Products/ListPage.vue'
 import TestPage1Child1 from '@/views/TestPage1Child1.vue'
 import type { RouteComponent } from 'vue-router'
@@ -80,9 +81,9 @@ export const routes: IRoute[] = [
         component: ProductsListPage
       },
       {
-        path: '/detail',
+        path: '/detail/:id',
         name: 'Products Detail',
-        component: TestPage1Child1
+        component: ProductsDetailPage
       }
     ]
   }
