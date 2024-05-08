@@ -24,50 +24,58 @@
       </div>
     </div>
 
-    <div class="flex flex-row gap-4">
+    <div v-if="data" class="flex flex-row gap-4">
       <div
         class="flex flex-col justify-center w-1/2 gap-4 p-4 rounded shadow text-sm bg-white dark:bg-neutral-800"
       >
         <div class="flex flex-row gap-2">
           <span class="w-28">ID</span>
           <span>:</span>
-          <span class="w-full">4</span>
+          <span class="w-full">{{ data?.id }}</span>
         </div>
         <div class="flex flex-row gap-2">
           <span class="w-28">Title</span>
           <span>:</span>
-          <span class="w-full">Sleek All-Terrain Go-Kart</span>
+          <span class="w-full">{{ data?.title }}</span>
         </div>
         <div class="flex flex-row gap-2">
           <span class="w-28">Category</span>
           <span>:</span>
-          <span class="w-full">Others</span>
+          <span class="w-full">{{ data?.category.name }}</span>
         </div>
         <div class="flex flex-row gap-2">
           <span class="w-28">Price</span>
           <span>:</span>
-          <span class="w-full">$687</span>
+          <span class="w-full">${{ data?.price || 0 }}</span>
         </div>
         <div class="flex flex-row gap-2">
           <span class="w-28">Description</span>
           <span>:</span>
-          <span class="w-full"
-            >Experience the thrill of outdoor adventures with our Sleek All-Terrain Go-Kart,
-            featuring a durable frame, comfortable racing seat, and robust, large-tread tires
-            perfect for handling a variety of terrains. Designed for fun-seekers of all ages, this
-            go-kart is an ideal choice for backyard racing or exploring local trails</span
-          >
+          <span class="w-full">{{ data?.description }}</span>
         </div>
       </div>
     </div>
+
+    <LoadingFullscreen v-if="productsStore.isLoading" />
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/buttons/BaseButton.vue'
-import { useRouter } from 'vue-router'
+import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
+import type { IProduct } from '@/interfaces/products'
+import { useProductsStore } from '@/stores/products'
+import { onMounted, ref, type Ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
+const productsStore = useProductsStore()
+const data: Ref<IProduct | undefined> = ref()
+
+onMounted(async () => {
+  data.value = await productsStore.getProductById(Number(route.params.id))
+})
 
 const handleBackToListPage = () => {
   router.push({ name: 'Products List' })

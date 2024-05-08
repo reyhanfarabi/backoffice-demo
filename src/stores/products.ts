@@ -6,6 +6,7 @@ import { ref, type Ref } from 'vue'
 
 export const useProductsStore = defineStore('productsStore', () => {
   const products: Ref<IProduct[]> = ref([])
+  const isLoading: Ref<boolean> = ref(false)
 
   const dispatchGetProducts = async (params: IQueryParams) => {
     try {
@@ -17,8 +18,24 @@ export const useProductsStore = defineStore('productsStore', () => {
     }
   }
 
+  const getProductById = async (id: number) => {
+    isLoading.value = true
+
+    try {
+      const { status, data } = await API.products.getProductById(id)
+      isLoading.value = false
+      if (status === 200) return data
+    } catch (error) {
+      isLoading.value = false
+      console.log(error)
+      return {}
+    }
+  }
+
   return {
     products,
-    dispatchGetProducts
+    isLoading,
+    dispatchGetProducts,
+    getProductById
   }
 })
