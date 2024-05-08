@@ -32,10 +32,23 @@ export const useProductsStore = defineStore('productsStore', () => {
     }
   }
 
+  const deleteProduct = async (id: number) => {
+    isLoading.value = true
+
+    try {
+      await API.products.deleteProduct(id)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     products,
     isLoading,
     dispatchGetProducts,
-    getProductById
+    getProductById,
+    deleteProduct
   }
 })

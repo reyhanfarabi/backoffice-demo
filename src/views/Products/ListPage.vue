@@ -88,6 +88,17 @@
             >
               <i class="pi pi-ellipsis-h" />
             </BaseButton>
+            <BaseButton
+              class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
+              @click="
+                () => {
+                  isDeleteModalVisible = true
+                  deleteId = data
+                }
+              "
+            >
+              <i class="pi pi-trash text-white" />
+            </BaseButton>
           </div>
         </template>
         <template #empty>
@@ -95,6 +106,20 @@
         </template>
       </BaseTable>
     </div>
+
+    <BaseModals v-if="isDeleteModalVisible" @close-modal-event="handleCloseDeleteModal">
+      <div class="flex flex-col gap-4 p-4">
+        <span>Are you sure you want to delete product?</span>
+        <div class="flex flex-row gap-2">
+          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+            >Cancel</BaseButton
+          >
+          <BaseButton class="flex-1" type="outlined" @click="handleDeleteProduct">Yes</BaseButton>
+        </div>
+      </div>
+    </BaseModals>
+
+    <LoadingFullscreen v-if="productsStore.isLoading" />
   </div>
 </template>
 
@@ -104,6 +129,8 @@ import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue'
 import BaseInput from '@/components/inputs/BaseInput.vue'
+import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
+import BaseModals from '@/components/modals/BaseModals.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import { useCategoriesStore } from '@/stores/categories'
@@ -124,6 +151,8 @@ const headers = ref([
   'Updated At',
   ''
 ])
+const isDeleteModalVisible: Ref<boolean> = ref(false)
+const deleteId: Ref<number> = ref(NaN)
 
 const data: ComputedRef<(string | number)[][]> = computed(() => {
   return productsStore.products.map((p) => {
@@ -238,6 +267,22 @@ const resetFilter = async () => {
     keyword: '',
     price: NaN,
     categoryId: categoriesOptions.value[0].key
+  }
+
+  await fetchProducts()
+}
+
+const handleCloseDeleteModal = (): void => {
+  deleteId.value = NaN
+  isDeleteModalVisible.value = false
+}
+
+const handleDeleteProduct = async () => {
+  isDeleteModalVisible.value = false
+
+  if (deleteId.value) {
+    await productsStore.deleteProduct(deleteId.value)
+    isDeleteModalVisible.value = false
   }
 
   await fetchProducts()

@@ -12,7 +12,12 @@ const getProductById = async (id: number) => {
   return await apiService.get(`${endpoints.products}/${id}`)
 }
 
+const deleteProduct = async (id: number) => {
+  return await apiService.delete(`${endpoints.products}/${id}`)
+}
+
 export default {
   getProducts,
-  getProductById
+  getProductById,
+  deleteProduct
 }
