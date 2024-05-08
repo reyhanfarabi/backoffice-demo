@@ -7,7 +7,7 @@
       }
     "
   >
-    <div class="p-4 rounded bg-neutral-800" @click.prevent.stop>
+    <div class="p-4 rounded bg-neutral-200 dark:bg-neutral-800" @click.prevent.stop>
       <slot />
     </div>
   </div>
