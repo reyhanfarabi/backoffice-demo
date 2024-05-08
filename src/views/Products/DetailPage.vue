@@ -16,7 +16,11 @@
           </BaseButton>
           <BaseButton
             class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
-            @click="() => {}"
+            @click="
+              () => {
+                isDeleteModalVisible = true
+              }
+            "
           >
             <i class="pi pi-trash text-white" />
           </BaseButton>
@@ -56,6 +60,18 @@
       </div>
     </div>
 
+    <BaseModals v-if="isDeleteModalVisible" @close-modal-event="handleCloseDeleteModal">
+      <div class="flex flex-col gap-4 p-4">
+        <span>Are you sure you want to delete product?</span>
+        <div class="flex flex-row gap-2">
+          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+            >Cancel</BaseButton
+          >
+          <BaseButton class="flex-1" type="outlined" @click="handleDeleteProduct">Yes</BaseButton>
+        </div>
+      </div>
+    </BaseModals>
+
     <LoadingFullscreen v-if="productsStore.isLoading" />
   </div>
 </template>
@@ -66,6 +82,7 @@ import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import type { IProduct } from '@/interfaces/products'
 import { useProductsStore } from '@/stores/products'
 import { onMounted, ref, type Ref } from 'vue'
+import BaseModals from '@/components/modals/BaseModals.vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -76,8 +93,24 @@ const data: Ref<IProduct | undefined> = ref()
 onMounted(async () => {
   data.value = await productsStore.getProductById(Number(route.params.id))
 })
+const isDeleteModalVisible: Ref<boolean> = ref(false)
 
 const handleBackToListPage = () => {
   router.push({ name: 'Products List' })
+}
+
+const handleCloseDeleteModal = (): void => {
+  isDeleteModalVisible.value = false
+}
+
+const handleDeleteProduct = async () => {
+  handleCloseDeleteModal()
+
+  if (route.params.id) {
+    await productsStore.deleteProduct(Number(route.params.id))
+    isDeleteModalVisible.value = false
+  }
+
+  await handleBackToListPage()
 }
 </script>
