@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-8 pb-20">
-    <div class="flex flex-row w-full gap-4 items-center">
+    <div class="flex flex-row w-full gap-4 items-center justify-between">
       <BaseButton
         class="flex items-center gap-2 w-fit text-xs"
         type="outlined"
@@ -8,10 +8,16 @@
       >
         <i class="pi pi-arrow-left" />
       </BaseButton>
-      <div class="flex flex-row w-full items-center justify-between">
-        <h1 class="text-2xl font-bold">Detail Products</h1>
+      <div class="flex flex-row items-center">
         <div class="flex gap-2">
-          <BaseButton type="vanilla" @click="() => {}">
+          <BaseButton
+            type="vanilla"
+            @click="
+              () => {
+                $router.push({ name: 'Products Edit', params: { id: $route.params.id } })
+              }
+            "
+          >
             <i class="pi pi-pencil" />
           </BaseButton>
           <BaseButton
@@ -28,10 +34,9 @@
       </div>
     </div>
 
-    <div v-if="data" class="flex flex-row gap-4">
-      <div
-        class="flex flex-col justify-center w-1/2 gap-4 p-4 rounded shadow text-sm bg-white dark:bg-neutral-800"
-      >
+    <div v-if="data" class="flex flex-col p-8 gap-8 rounded shadow bg-white dark:bg-neutral-800">
+      <h1 class="text-2xl font-bold">Detail Products</h1>
+      <div class="flex flex-col justify-center gap-4 w-2/3">
         <div class="flex flex-row gap-2">
           <span class="w-28">ID</span>
           <span>:</span>

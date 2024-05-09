@@ -47,6 +47,7 @@
             id="filterByCategory"
             class="w-56"
             :options="categoriesOptions"
+            :value="filters.categoryId"
             @change="
               (event: Event) => handleChangeCategory((event.target as HTMLSelectElement).value)
             "
@@ -157,7 +158,9 @@ import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 
 const productsStore = useProductsStore()
 const categoriesStore = useCategoriesStore()
-const isLoading: Ref<boolean> = ref(false)
+const isLoading: ComputedRef<boolean> = computed(
+  () => productsStore.isLoading || categoriesStore.isLoading
+)
 const headers = ref([
   'ID',
   'Title',
@@ -222,8 +225,6 @@ onMounted(async () => {
 })
 
 const fetchProducts = async () => {
-  isLoading.value = true
-
   const queryParams: Ref<IQueryParams> = ref({
     offset: (pagination.value.page - 1) * pagination.value.perPage,
     limit: pagination.value.perPage
@@ -242,14 +243,10 @@ const fetchProducts = async () => {
   }
 
   await productsStore.dispatchGetProducts(queryParams.value)
-
-  isLoading.value = false
 }
 
 const fetchCategories = async () => {
-  isLoading.value = true
   await categoriesStore.dispatchGetCategories()
-  isLoading.value = false
 }
 
 const handleChangePage = (direction: 'prev' | 'next') => {
