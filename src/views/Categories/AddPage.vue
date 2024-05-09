@@ -6,23 +6,30 @@
       @click="handleBackToListPage"
     >
       <i class="pi pi-arrow-left" />
-      <span class="text-sm">Back</span>
     </BaseButton>
 
-    <div class="flex flex-row justify-between items-center">
-      <h1 class="text-2xl font-bold">Categories</h1>
-    </div>
+    <div class="flex flex-col gap-8 p-8 rounded shadow bg-white dark:bg-neutral-800 w-1/2">
+      <div class="flex flex-row justify-between items-center">
+        <h1 class="text-2xl font-bold">Add Categories</h1>
+        <BaseButton
+          class="self-end w-28"
+          type="filled"
+          @click="handleOpenAddModal"
+          :disabled="categoriesStore.isLoading"
+        >
+          <span>Save</span>
+        </BaseButton>
+      </div>
 
-    <div class="flex flex-col gap-4 p-4 rounded bg-neutral-200 dark:bg-neutral-800 w-1/2">
       <div class="flex flex-col gap-4">
-        <div class="flex flex-row">
-          <label class="w-28 p-1" for="name">Name</label>
+        <div class="flex flex-col gap-2">
+          <label class="text-sm" for="name">Name</label>
           <BaseInput
             class="w-96"
             type="text"
             name="nameField"
             id="name"
-            :value="newData.name"
+            v-model="newData.name"
             :is-error="$v.name.$error"
             :error-message="$v.name.$error ? $v.name.$errors[0].$message.toString() : ''"
             @change="
@@ -33,14 +40,14 @@
           />
         </div>
         <div class="flex flex-col gap-2">
-          <div class="flex flex-row">
-            <label class="w-28 p-1" for="name">Image</label>
+          <div class="flex flex-col gap-2">
+            <label class="text-sm" for="name">Image</label>
             <BaseInput
               class="w-96"
               type="text"
               name="nameField"
               id="name"
-              :value="newData.image"
+              v-model="newData.image"
               :is-error="$v.image.$error"
               :error-message="$v.image.$error ? $v.image.$errors[0].$message.toString() : ''"
               @change="
@@ -58,14 +65,6 @@
           />
         </div>
       </div>
-      <BaseButton
-        class="self-end w-28"
-        type="filled"
-        @click="handleOpenAddModal"
-        :disabled="categoriesStore.isLoading"
-      >
-        <span>Save</span>
-      </BaseButton>
     </div>
   </div>
 

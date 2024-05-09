@@ -1,5 +1,0 @@
-<template>
-  <div>
-    <span>Page 2</span>
-  </div>
-</template>

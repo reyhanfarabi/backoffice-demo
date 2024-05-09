@@ -10,3 +10,17 @@ export interface IProduct {
   updatedAt: Date
   category: ICategory
 }
+
+export interface IProductAddPayload {
+  title: string
+  price: number
+  description: string
+  categoryId: number
+  images: string[]
+}
+
+export interface IProductUpdatePayload {
+  title: string
+  price: number
+  description: string
+}

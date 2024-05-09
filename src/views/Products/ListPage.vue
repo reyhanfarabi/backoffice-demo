@@ -2,7 +2,14 @@
   <div class="flex flex-col gap-8">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Products</h1>
-      <BaseButton type="filled">
+      <BaseButton
+        type="filled"
+        @click="
+          () => {
+            $router.push({ name: 'Products Add' })
+          }
+        "
+      >
         <span class="text-sm font-semibold">New Product</span>
       </BaseButton>
     </div>
@@ -40,6 +47,7 @@
             id="filterByCategory"
             class="w-56"
             :options="categoriesOptions"
+            :value="filters.categoryId"
             @change="
               (event: Event) => handleChangeCategory((event.target as HTMLSelectElement).value)
             "
@@ -76,11 +84,60 @@
         <template #4="{ data }">
           <span class="line-clamp-2 w-[32rem]"> {{ data }} </span>
         </template>
+        <template #7="{ data }">
+          <div class="flex justify-center gap-2">
+            <BaseButton
+              type="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Products Detail', params: { id: data } })
+                }
+              "
+            >
+              <i class="pi pi-ellipsis-h" />
+            </BaseButton>
+            <BaseButton
+              type="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Products Edit', params: { id: data } })
+                }
+              "
+            >
+              <i class="pi pi-pencil" />
+            </BaseButton>
+            <BaseButton
+              class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
+              @click="
+                () => {
+                  isDeleteModalVisible = true
+                  deleteId = data
+                }
+              "
+            >
+              <i class="pi pi-trash text-white" />
+            </BaseButton>
+          </div>
+        </template>
         <template #empty>
           <span class="flex justify-center p-4">No products Found</span>
         </template>
       </BaseTable>
     </div>
+
+    <BaseModals v-if="isDeleteModalVisible" @close-modal-event="handleCloseDeleteModal">
+      <div class="flex flex-col gap-4 p-4">
+        <span>Are you sure you want to delete product?</span>
+        <div class="flex flex-row gap-2">
+          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+            >Cancel</BaseButton
+          >
+          <BaseButton class="flex-1" type="outlined" @click="handleDeleteProduct">Yes</BaseButton>
+        </div>
+      </div>
+    </BaseModals>
+
+    <LoadingFullscreen v-if="productsStore.isLoading" />
   </div>
 </template>
 
@@ -90,6 +147,8 @@ import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue'
 import BaseInput from '@/components/inputs/BaseInput.vue'
+import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
+import BaseModals from '@/components/modals/BaseModals.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import { useCategoriesStore } from '@/stores/categories'
@@ -99,8 +158,21 @@ import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 
 const productsStore = useProductsStore()
 const categoriesStore = useCategoriesStore()
-const isLoading: Ref<boolean> = ref(false)
-const headers = ref(['ID', 'Title', 'Category', 'Price', 'Description', 'Created At', 'Updated At'])
+const isLoading: ComputedRef<boolean> = computed(
+  () => productsStore.isLoading || categoriesStore.isLoading
+)
+const headers = ref([
+  'ID',
+  'Title',
+  'Category',
+  'Price',
+  'Description',
+  'Created At',
+  'Updated At',
+  ''
+])
+const isDeleteModalVisible: Ref<boolean> = ref(false)
+const deleteId: Ref<number> = ref(NaN)
 
 const data: ComputedRef<(string | number)[][]> = computed(() => {
   return productsStore.products.map((p) => {
@@ -111,7 +183,8 @@ const data: ComputedRef<(string | number)[][]> = computed(() => {
       p.price,
       p.description,
       dayjs(p.creationAt).format('YYYY-MM-DD HH:mm:ss Z'),
-      dayjs(p.updatedAt).format('YYYY-MM-DD HH:mm:ss Z')
+      dayjs(p.updatedAt).format('YYYY-MM-DD HH:mm:ss Z'),
+      p.id
     ]
   })
 })
@@ -152,8 +225,6 @@ onMounted(async () => {
 })
 
 const fetchProducts = async () => {
-  isLoading.value = true
-
   const queryParams: Ref<IQueryParams> = ref({
     offset: (pagination.value.page - 1) * pagination.value.perPage,
     limit: pagination.value.perPage
@@ -172,14 +243,10 @@ const fetchProducts = async () => {
   }
 
   await productsStore.dispatchGetProducts(queryParams.value)
-
-  isLoading.value = false
 }
 
 const fetchCategories = async () => {
-  isLoading.value = true
   await categoriesStore.dispatchGetCategories()
-  isLoading.value = false
 }
 
 const handleChangePage = (direction: 'prev' | 'next') => {
@@ -214,6 +281,22 @@ const resetFilter = async () => {
     keyword: '',
     price: NaN,
     categoryId: categoriesOptions.value[0].key
+  }
+
+  await fetchProducts()
+}
+
+const handleCloseDeleteModal = (): void => {
+  deleteId.value = NaN
+  isDeleteModalVisible.value = false
+}
+
+const handleDeleteProduct = async () => {
+  isDeleteModalVisible.value = false
+
+  if (deleteId.value) {
+    await productsStore.deleteProduct(deleteId.value)
+    isDeleteModalVisible.value = false
   }
 
   await fetchProducts()
