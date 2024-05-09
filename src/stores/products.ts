@@ -1,6 +1,6 @@
 import { API } from '@/api'
 import type { IQueryParams } from '@/common/types'
-import type { IProduct } from '@/interfaces/products'
+import type { IProduct, IProductPayload } from '@/interfaces/products'
 import { defineStore } from 'pinia'
 import { ref, type Ref } from 'vue'
 
@@ -44,11 +44,24 @@ export const useProductsStore = defineStore('productsStore', () => {
     }
   }
 
+  const addProduct = async (payload: IProductPayload) => {
+    isLoading.value = true
+
+    try {
+      await API.products.addProduct(payload)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     products,
     isLoading,
     dispatchGetProducts,
     getProductById,
-    deleteProduct
+    deleteProduct,
+    addProduct
   }
 })

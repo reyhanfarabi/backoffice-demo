@@ -2,7 +2,14 @@
   <div class="flex flex-col gap-8">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Products</h1>
-      <BaseButton type="filled">
+      <BaseButton
+        type="filled"
+        @click="
+          () => {
+            $router.push({ name: 'Products Add' })
+          }
+        "
+      >
         <span class="text-sm font-semibold">New Product</span>
       </BaseButton>
     </div>

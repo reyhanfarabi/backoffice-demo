@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col gap-2 w-full">
-    <input
+  <div class="flex flex-col gap-2">
+    <textarea
       class="px-2 py-1 rounded text-neutral-900 dark:text-neutral-100 bg-transparent border border-neutral-800/20 dark:border-neutral-200/20"
       v-bind="$attrs"
       :value="modelValue"
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-export interface IBaseInputProps {
+export interface IBaseTextAreaProps {
   isError: boolean
   errorMessage: string
   modelValue?: any
@@ -27,7 +27,7 @@ defineOptions({
   inheritAttrs: false
 })
 
-const props = withDefaults(defineProps<IBaseInputProps>(), {
+const props = withDefaults(defineProps<IBaseTextAreaProps>(), {
   isError: false,
   errorMessage: 'Please enter a valid data'
 })

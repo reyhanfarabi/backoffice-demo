@@ -3,9 +3,9 @@ import CategoriesDetailPage from '@/views/Categories/DetailPage.vue'
 import CategoriesEditPage from '@/views/Categories/EditPage.vue'
 import CategoriesListPage from '@/views/Categories/ListPage.vue'
 import MainView from '@/views/MainView.vue'
+import ProductsAddPage from '@/views/Products/AddPage.vue'
 import ProductsDetailPage from '@/views/Products/DetailPage.vue'
 import ProductsListPage from '@/views/Products/ListPage.vue'
-import TestPage1Child1 from '@/views/TestPage1Child1.vue'
 import type { RouteComponent } from 'vue-router'
 
 export interface IRouteBase {
@@ -84,6 +84,11 @@ export const routes: IRoute[] = [
         path: '/detail/:id',
         name: 'Products Detail',
         component: ProductsDetailPage
+      },
+      {
+        path: '/add',
+        name: 'Products Add',
+        component: ProductsAddPage
       }
     ]
   }
