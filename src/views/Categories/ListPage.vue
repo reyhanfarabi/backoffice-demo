@@ -8,7 +8,7 @@
     </div>
 
     <div class="flex w-full">
-      <BaseTable :headers="headers" :datalist="data" :is-loading="isLoading">
+      <BaseTable :headers="headers" :datalist="data" :is-loading="categoriesStore.isLoading">
         <template #2="{ data }">
           <div class="truncate max-w-[28rem]">
             {{ data }}
@@ -79,31 +79,17 @@ import BaseButton from '@/components/buttons/BaseButton.vue'
 import LoadingSpinner from '@/components/loadings/LoadingSpinner.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
-import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
 import dayjs from 'dayjs'
-import { onMounted, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 
 const categoriesStore = useCategoriesStore()
 const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At', ''])
-const data: Ref<(string | number)[][]> = ref([])
-const isLoading: Ref<boolean> = ref(false)
 const isDeleteModalVisible: Ref<boolean> = ref(false)
 const deleteId: Ref<number | null> = ref(null)
 
-onMounted(async () => {
-  await fetchCategories()
-})
-
-const fetchCategories = async () => {
-  isLoading.value = true
-  await categoriesStore.dispatchGetCategories()
-  tableMapper()
-  isLoading.value = false
-}
-
-const tableMapper = () => {
-  data.value = categoriesStore.categories.map((c: ICategory) => {
+const data: ComputedRef<(string | number)[][]> = computed(() => {
+  return categoriesStore.categories.map((c) => {
     return [
       c.id,
       c.name,
@@ -113,6 +99,14 @@ const tableMapper = () => {
       c.id
     ]
   })
+})
+
+onMounted(async () => {
+  await fetchCategories()
+})
+
+const fetchCategories = async (): Promise<void> => {
+  await categoriesStore.dispatchGetCategories()
 }
 
 const handleCloseDeleteModal = (): void => {
@@ -124,7 +118,7 @@ const getCategoryNameById = (): string => {
   return categoriesStore.categories.find((c) => c.id === deleteId.value)?.name || ''
 }
 
-const handleDeleteCategory = async () => {
+const handleDeleteCategory = async (): Promise<void> => {
   if (deleteId.value) {
     await categoriesStore.deleteCategory(deleteId.value)
     isDeleteModalVisible.value = false

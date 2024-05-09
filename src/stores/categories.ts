@@ -8,6 +8,8 @@ export const useCategoriesStore = defineStore('categories', () => {
   const isLoading: Ref<boolean> = ref(false)
 
   const dispatchGetCategories = async () => {
+    isLoading.value = true
+
     try {
       const { status, data } = await API.categories.getCategories()
       if (status === 200) categories.value = data
