@@ -11,7 +11,14 @@
       <div class="flex flex-row w-full items-center justify-between">
         <h1 class="text-2xl font-bold">Detail Products</h1>
         <div class="flex gap-2">
-          <BaseButton type="vanilla" @click="() => {}">
+          <BaseButton
+            type="vanilla"
+            @click="
+              () => {
+                $router.push({ name: 'Products Edit', params: { id: $route.params.id } })
+              }
+            "
+          >
             <i class="pi pi-pencil" />
           </BaseButton>
           <BaseButton
