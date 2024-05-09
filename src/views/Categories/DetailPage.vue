@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-8 p-8 rounded shadow bg-white dark:bg-neutral-800">
+    <div class="flex flex-col gap-8 p-8 rounded shadow bg-white dark:bg-neutral-800 w-1/2">
       <h1 class="text-2xl font-bold">Detail Categories</h1>
       <div class="flex flex-row gap-8">
         <img

@@ -8,7 +8,7 @@
       <i class="pi pi-arrow-left" />
     </BaseButton>
 
-    <div class="flex flex-col gap-8 p-8 rounded bg-neutral-200 dark:bg-neutral-800 w-1/2">
+    <div class="flex flex-col gap-8 p-8 rounded shadow bg-white dark:bg-neutral-800 w-1/2">
       <div class="flex flex-row justify-between items-center">
         <h1 class="text-2xl font-bold">Add Categories</h1>
         <BaseButton
