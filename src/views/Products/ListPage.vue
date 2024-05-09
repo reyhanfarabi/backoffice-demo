@@ -96,6 +96,16 @@
               <i class="pi pi-ellipsis-h" />
             </BaseButton>
             <BaseButton
+              type="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Products Edit', params: { id: data } })
+                }
+              "
+            >
+              <i class="pi pi-pencil" />
+            </BaseButton>
+            <BaseButton
               class="p-2 rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
               @click="
                 () => {

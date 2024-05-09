@@ -5,6 +5,7 @@ import CategoriesListPage from '@/views/Categories/ListPage.vue'
 import MainView from '@/views/MainView.vue'
 import ProductsAddPage from '@/views/Products/AddPage.vue'
 import ProductsDetailPage from '@/views/Products/DetailPage.vue'
+import EditPage from '@/views/Products/EditPage.vue'
 import ProductsListPage from '@/views/Products/ListPage.vue'
 import type { RouteComponent } from 'vue-router'
 
@@ -89,6 +90,11 @@ export const routes: IRoute[] = [
         path: '/add',
         name: 'Products Add',
         component: ProductsAddPage
+      },
+      {
+        path: '/edit/:id',
+        name: 'Products Edit',
+        component: EditPage
       }
     ]
   }

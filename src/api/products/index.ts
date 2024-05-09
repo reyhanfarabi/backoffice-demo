@@ -1,7 +1,7 @@
 import { apiService } from '@/services/api'
 import { endpoints } from '../endpoints'
 import type { IQueryParams } from '@/common/types'
-import type { IProductPayload } from '@/interfaces/products'
+import type { IProductAddPayload, IProductUpdatePayload } from '@/interfaces/products'
 
 const getProducts = async (params: IQueryParams) => {
   return await apiService.get(endpoints.products, {
@@ -17,13 +17,18 @@ const deleteProduct = async (id: number) => {
   return await apiService.delete(`${endpoints.products}/${id}`)
 }
 
-const addProduct = async (payload: IProductPayload) => {
+const addProduct = async (payload: IProductAddPayload) => {
   return await apiService.post(endpoints.products, payload)
+}
+
+const updateProduct = async (id: number, payload: IProductUpdatePayload) => {
+  return await apiService.put(`${endpoints.products}/${id}`, payload)
 }
 
 export default {
   getProducts,
   getProductById,
   deleteProduct,
-  addProduct
+  addProduct,
+  updateProduct
 }
