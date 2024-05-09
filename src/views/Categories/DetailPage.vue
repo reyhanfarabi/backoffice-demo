@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-8 pb-20">
-    <div class="flex flex-row w-full gap-4 items-center">
+    <div class="flex flex-row justify-between w-full gap-4 items-center">
       <BaseButton
         class="flex items-center gap-2 w-fit text-xs"
         type="outlined"
@@ -8,8 +8,7 @@
       >
         <i class="pi pi-arrow-left" />
       </BaseButton>
-      <div class="flex flex-row w-full justify-between">
-        <h1 class="text-2xl font-bold">Detail Categories</h1>
+      <div class="flex flex-row">
         <div class="flex gap-2">
           <BaseButton
             type="vanilla"
@@ -35,65 +34,37 @@
       </div>
     </div>
 
-    <div class="flex flex-row gap-4">
-      <img
-        v-if="data.image"
-        :src="data.image"
-        class="aspect-square h-60 w-60 rounded border border-neutral-300 dark:border-neutral-700"
-        :alt="`${data.name} image`"
-      />
+    <div class="flex flex-col gap-8 p-8 rounded shadow bg-white dark:bg-neutral-800">
+      <h1 class="text-2xl font-bold">Detail Categories</h1>
+      <div class="flex flex-row gap-8">
+        <img
+          v-if="data.image"
+          :src="data.image"
+          class="aspect-square h-60 w-60 rounded border border-neutral-300 dark:border-neutral-700"
+          :alt="`${data.name} image`"
+        />
 
-      <div
-        v-if="!categoriesStore.isLoading"
-        class="flex flex-col justify-center w-full gap-4 p-4 rounded shadow text-sm bg-white dark:bg-neutral-800"
-      >
-        <div class="flex flex-row items-center gap-2">
-          <label class="w-28" for="categoryId">ID</label>
-          <span>:</span>
-          <BaseInput
-            class="w-16"
-            type="text"
-            name="categoryIdField"
-            id="categoryId"
-            disabled
-            :model-value="data.id"
-          />
-        </div>
-        <div class="flex flex-row items-center gap-2">
-          <label class="w-28" for="name">Name</label>
-          <span>:</span>
-          <BaseInput
-            class="w-96"
-            type="text"
-            name="nameField"
-            id="name"
-            disabled
-            :model-value="data.name"
-          />
-        </div>
-        <div class="flex flex-row items-center gap-2">
-          <label class="w-28" for="creationAt">Creation At</label>
-          <span>:</span>
-          <BaseInput
-            class="w-96"
-            type="text"
-            name="creationAtField"
-            id="creationAt"
-            disabled
-            :model-value="dayjs(data.creationAt).format('MMMM DD, YYYY HH:mm:ss Z')"
-          />
-        </div>
-        <div class="flex flex-row items-center gap-2">
-          <label class="w-28" for="updatedAt">Updated At</label>
-          <span>:</span>
-          <BaseInput
-            class="w-96"
-            type="text"
-            name="updatedAtField"
-            id="updatedAt"
-            disabled
-            :model-value="dayjs(data.updatedAt).format('MMMM DD, YYYY HH:mm:ss Z')"
-          />
+        <div v-if="!categoriesStore.isLoading" class="flex flex-col w-full gap-4">
+          <div class="flex flex-row items-center gap-2">
+            <label class="w-28" for="categoryId">ID</label>
+            <span>:</span>
+            <span>{{ data.id }}</span>
+          </div>
+          <div class="flex flex-row items-center gap-2">
+            <label class="w-28" for="name">Name</label>
+            <span>:</span>
+            <span>{{ data.name }}</span>
+          </div>
+          <div class="flex flex-row items-center gap-2">
+            <label class="w-28" for="creationAt">Creation At</label>
+            <span>:</span>
+            <span>{{ dayjs(data.creationAt).format('MMMM DD, YYYY HH:mm:ss Z') }}</span>
+          </div>
+          <div class="flex flex-row items-center gap-2">
+            <label class="w-28" for="updatedAt">Updated At</label>
+            <span>:</span>
+            <span>{{ dayjs(data.updatedAt).format('MMMM DD, YYYY HH:mm:ss Z') }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -118,7 +89,6 @@
 
 <script setup lang="ts">
 import BaseButton from '@/components/buttons/BaseButton.vue'
-import BaseInput from '@/components/inputs/BaseInput.vue'
 import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
 import type { ICategory } from '@/interfaces/categories'
