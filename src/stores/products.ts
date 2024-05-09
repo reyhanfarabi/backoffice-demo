@@ -9,12 +9,16 @@ export const useProductsStore = defineStore('productsStore', () => {
   const isLoading: Ref<boolean> = ref(false)
 
   const dispatchGetProducts = async (params: IQueryParams) => {
+    isLoading.value = true
+
     try {
       const { status, data } = await API.products.getProducts(params)
       if (status === 200) products.value = data
     } catch (error) {
       products.value = []
       console.log(error)
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -28,7 +32,8 @@ export const useProductsStore = defineStore('productsStore', () => {
     } catch (error) {
       isLoading.value = false
       console.log(error)
-      return {}
+    } finally {
+      isLoading.value = false
     }
   }
 

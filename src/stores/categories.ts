@@ -14,6 +14,8 @@ export const useCategoriesStore = defineStore('categories', () => {
     } catch (error) {
       categories.value = []
       console.log(error)
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -27,7 +29,8 @@ export const useCategoriesStore = defineStore('categories', () => {
     } catch (error) {
       isLoading.value = false
       console.log(error)
-      return {}
+    } finally {
+      isLoading.value = false
     }
   }
 
