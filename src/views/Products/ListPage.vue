@@ -47,6 +47,7 @@
             id="filterByCategory"
             class="w-56"
             :options="categoriesOptions"
+            :value="filters.categoryId"
             @change="
               (event: Event) => handleChangeCategory((event.target as HTMLSelectElement).value)
             "
