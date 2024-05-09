@@ -6,12 +6,11 @@
       @click="handleBackToListPage"
     >
       <i class="pi pi-arrow-left" />
-      <span class="text-sm">Back</span>
     </BaseButton>
 
     <div class="flex flex-col p-8 gap-8 rounded shadow bg-white dark:bg-neutral-800">
       <div class="flex flex-row justify-between items-center">
-        <h1 class="text-2xl font-bold">Add Product</h1>
+        <h1 class="text-2xl font-bold">Edit Product</h1>
         <BaseButton
           class="self-end w-28"
           type="filled"
@@ -30,7 +29,7 @@
               type="text"
               name="titleField"
               id="title"
-              v-model="newData.title"
+              v-model="data.title"
               :is-error="$v.title.$error"
               :error-message="$v.title.$error ? $v.title.$errors[0].$message.toString() : ''"
             />
@@ -41,7 +40,7 @@
               type="number"
               name="priceField"
               id="price"
-              v-model="newData.price"
+              v-model="data.price"
               :is-error="$v.price.$error"
               :error-message="$v.price.$error ? $v.price.$errors[0].$message.toString() : ''"
             />
@@ -51,67 +50,12 @@
             <BaseTextArea
               name="descriptionField"
               id="description"
-              v-model="newData.description"
+              v-model="data.description"
               :is-error="$v.description.$error"
               :error-message="
                 $v.description.$error ? $v.description.$errors[0].$message.toString() : ''
               "
             />
-          </div>
-          <div class="flex flex-col gap-2">
-            <label class="text-sm" for="category">Category</label>
-            <BaseDropdown
-              name="categoryField"
-              id="category"
-              :options="categoriesOptions"
-              @change="
-                (event: Event) => handleChangeCategory((event.target as HTMLSelectElement).value)
-              "
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-4 w-1/2">
-          <div class="flex flex-col gap-2">
-            <label class="text-sm" for="images">Images</label>
-            <div
-              v-for="(_, index) in newData.images"
-              :key="index"
-              class="flex flex-row w-full gap-2"
-            >
-              <BaseInput
-                class="w-full"
-                type="text"
-                name="imagesField"
-                id="images"
-                v-model="newData.images[index]"
-                :is-error="$v.images.$error"
-                :error-message="$v.images.$error ? $v.images.$errors[0].$message.toString() : ''"
-              />
-              <BaseButton
-                v-if="newData.images.length > 1"
-                class="p-2 h-fit rounded text-neutral-100 bg-red-500 dark:bg-red-600 hover:bg-red-500/80 dark:hover:bg-red-600/80"
-                @click="
-                  () => {
-                    handleRemoveImageByIndex(index)
-                  }
-                "
-              >
-                <i class="pi pi-trash text-white" />
-              </BaseButton>
-            </div>
-            <BaseButton
-              class="flex items-center gap-2"
-              type="filled"
-              @click="
-                () => {
-                  newData.images.push('')
-                }
-              "
-            >
-              <i class="pi pi-plus text-white" />
-              <span>Add Image</span>
-            </BaseButton>
           </div>
         </div>
       </div>
@@ -121,8 +65,8 @@
   <BaseModals v-if="isConfirmModalVisible" @close-modal-event="handleCloseAddModal">
     <div class="flex flex-col gap-4 p-4">
       <span
-        >Are you sure you want to add
-        <span class="font-semibold">{{ newData.title }}</span> category?</span
+        >Are you sure you want to edit
+        <span class="font-semibold">{{ data.title }}</span> category?</span
       >
       <div class="flex flex-row gap-2">
         <BaseButton class="flex-1" type="filled" @click="handleCloseAddModal">Cancel</BaseButton>
@@ -135,43 +79,28 @@
 </template>
 
 <script setup lang="ts">
-import type { IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
-import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue'
 import BaseInput from '@/components/inputs/BaseInput.vue'
 import BaseTextArea from '@/components/inputs/BaseTextArea.vue'
 import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
-import type { IProductAddPayload } from '@/interfaces/products'
-import { useCategoriesStore } from '@/stores/categories'
+import type { IProduct } from '@/interfaces/products'
+import type { IProductUpdatePayload } from '@/interfaces/products'
 import { useProductsStore } from '@/stores/products'
 import useVuelidate from '@vuelidate/core'
 import { helpers, minLength, numeric, required } from '@vuelidate/validators'
-import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, ref, type Ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
 const productsStore = useProductsStore()
-const categoriesStore = useCategoriesStore()
 const isConfirmModalVisible: Ref<boolean> = ref(false)
 
-const categoriesOptions: ComputedRef<IOptions[]> = computed(() => {
-  return [
-    ...categoriesStore.categories.map((c) => {
-      return {
-        key: String(c.id),
-        value: c.name
-      }
-    })
-  ]
-})
-
-const newData: Ref<IProductAddPayload> = ref({
+const data: Ref<IProductUpdatePayload> = ref({
   title: '',
   price: NaN,
-  description: '',
-  categoryId: NaN,
-  images: ['']
+  description: ''
 })
 
 const rules = {
@@ -186,19 +115,17 @@ const rules = {
   description: {
     required: helpers.withMessage('Description field cannot be empty', required),
     minLength: helpers.withMessage('Description must be at least 3 characters', minLength(3))
-  },
-  categoryId: {
-    required: helpers.withMessage('Category field cannot be empty', required)
-  },
-  images: {
-    required: helpers.withMessage('Images field cannot be empty', required)
   }
 }
 
-const $v = useVuelidate(rules, newData)
+const $v = useVuelidate(rules, data)
 
 onMounted(async () => {
-  await categoriesStore.dispatchGetCategories()
+  const result: IProduct = await productsStore.getProductById(Number(route.params.id))
+
+  if (result) {
+    mapProduct(result)
+  }
 })
 
 const handleBackToListPage = (): void => {
@@ -210,12 +137,10 @@ const handleSave = async (): Promise<void> => {
   const result = await $v.value.$validate()
 
   if (result) {
-    await productsStore.addProduct({
-      title: newData.value.title.trim(),
-      price: newData.value.price,
-      description: newData.value.description,
-      categoryId: newData.value.categoryId,
-      images: newData.value.images
+    await productsStore.updateProduct(Number(route.params.id), {
+      title: data.value.title.trim(),
+      price: data.value.price,
+      description: data.value.description.trim()
     })
     handleBackToListPage()
   }
@@ -233,11 +158,9 @@ const handleCloseAddModal = (): void => {
   isConfirmModalVisible.value = false
 }
 
-const handleChangeCategory = (categoryId: string): void => {
-  newData.value.categoryId = Number(categoryId)
-}
-
-const handleRemoveImageByIndex = (index: number): void => {
-  newData.value.images.splice(index, 1)
+const mapProduct = (fetchedData: IProduct): void => {
+  data.value.title = fetchedData.title
+  data.value.price = fetchedData.price
+  data.value.description = fetchedData.description
 }
 </script>
