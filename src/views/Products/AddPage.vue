@@ -6,7 +6,6 @@
       @click="handleBackToListPage"
     >
       <i class="pi pi-arrow-left" />
-      <span class="text-sm">Back</span>
     </BaseButton>
 
     <div class="flex flex-col p-8 gap-8 rounded shadow bg-white dark:bg-neutral-800">
