@@ -69,6 +69,45 @@
       </div>
     </div>
 
+    <div class="flex flex-col w-full">
+      <BaseTable
+        :headers="headers"
+        :datalist="productsData"
+        :is-loading="productsStore.isLoading"
+        :pagination="pagination"
+        @prev-page-event="handleChangePage('prev')"
+        @next-page-event="handleChangePage('next')"
+        @change-per-page-event="(val: number) => handleChangePerPage(val)"
+      >
+        <template #1="{ data }">
+          <span> {{ data }} </span>
+        </template>
+        <template #3="{ data }">
+          <span> {{ `$${data}` }} </span>
+        </template>
+        <template #4="{ data }">
+          <span class="line-clamp-2 w-[32rem]"> {{ data }} </span>
+        </template>
+        <template #7="{ data }">
+          <div class="flex justify-center gap-2">
+            <BaseButton
+              type="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Products Detail', params: { id: data } })
+                }
+              "
+            >
+              <i class="pi pi-ellipsis-h" />
+            </BaseButton>
+          </div>
+        </template>
+        <template #empty>
+          <span class="flex justify-center p-4">No products Found</span>
+        </template>
+      </BaseTable>
+    </div>
+
     <BaseModals v-if="isDeleteModalVisible" @close-modal-event="handleCloseDeleteModal">
       <div class="flex flex-col gap-4 p-4">
         <span
@@ -88,17 +127,22 @@
 </template>
 
 <script setup lang="ts">
+import type { IOptions, IQueryParams } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
+import BaseTable from '@/components/table/BaseTable.vue'
+import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 import type { ICategory } from '@/interfaces/categories'
 import { useCategoriesStore } from '@/stores/categories'
+import { useProductsStore } from '@/stores/products'
 import dayjs from 'dayjs'
-import { onMounted, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
+const productsStore = useProductsStore()
 const categoriesStore = useCategoriesStore()
 const data: Ref<ICategory> = ref({
   id: NaN,
@@ -109,8 +153,48 @@ const data: Ref<ICategory> = ref({
 })
 const isDeleteModalVisible: Ref<boolean> = ref(false)
 
+const perPageOptions: Ref<IOptions[]> = ref([
+  { key: '10', value: '10' },
+  { key: '15', value: '15' },
+  { key: '20', value: '20' }
+])
+
+const pagination: Ref<IBaseTablePagination> = ref({
+  page: 1,
+  perPage: Number(perPageOptions.value[0].key),
+  perPageOptions: perPageOptions
+})
+
+const headers = ref([
+  'ID',
+  'Title',
+  'Category',
+  'Price',
+  'Description',
+  'Created At',
+  'Updated At',
+  ''
+])
+
+const productsData: ComputedRef<(string | number)[][]> = computed(() => {
+  return productsStore.products.map((p) => {
+    return [
+      p.id,
+      p.title,
+      p.category.name,
+      p.price,
+      p.description,
+      dayjs(p.creationAt).format('YYYY-MM-DD HH:mm:ss Z'),
+      dayjs(p.updatedAt).format('YYYY-MM-DD HH:mm:ss Z'),
+      p.id
+    ]
+  })
+})
+
 onMounted(async () => {
   data.value = await categoriesStore.getCategoryById(Number(route.params.id))
+
+  await fetchProducts()
 })
 
 const handleCloseDeleteModal = (): void => {
@@ -130,5 +214,36 @@ const handleDeleteCategory = async () => {
 
 const handleBackToListPage = () => {
   router.push({ name: 'Categories List' })
+}
+
+const fetchProducts = async (): Promise<void> => {
+  const queryParams: Ref<IQueryParams> = ref({
+    offset: (pagination.value.page - 1) * pagination.value.perPage,
+    limit: pagination.value.perPage
+  })
+
+  await productsStore.dispatchGetProductsByCategory(queryParams.value, Number(route.params.id))
+}
+
+const handleChangePage = (direction: 'prev' | 'next'): void => {
+  if (direction === 'prev') {
+    if (pagination.value.page > 1) {
+      pagination.value.page--
+      fetchProducts()
+    }
+  } else if (direction === 'next') {
+    if (
+      productsStore.products.length <= pagination.value.perPage &&
+      productsStore.products.length !== 0
+    ) {
+      pagination.value.page++
+      fetchProducts()
+    }
+  }
+}
+
+const handleChangePerPage = (perPageVal: number): void => {
+  pagination.value.perPage = perPageVal
+  fetchProducts()
 }
 </script>
