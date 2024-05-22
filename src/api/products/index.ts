@@ -9,6 +9,12 @@ const getProducts = async (params: IQueryParams) => {
   })
 }
 
+const getProductsByCategory = async (params: IQueryParams, categoryId: number) => {
+  return await apiService.get(`${endpoints.categories}/${categoryId}/${endpoints.products}`, {
+    params: params
+  })
+}
+
 const getProductById = async (id: number) => {
   return await apiService.get(`${endpoints.products}/${id}`)
 }
@@ -30,5 +36,6 @@ export default {
   getProductById,
   deleteProduct,
   addProduct,
-  updateProduct
+  updateProduct,
+  getProductsByCategory
 }

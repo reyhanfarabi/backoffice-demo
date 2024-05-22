@@ -22,6 +22,20 @@ export const useProductsStore = defineStore('productsStore', () => {
     }
   }
 
+  const dispatchGetProductsByCategory = async (params: IQueryParams, categoryId: number) => {
+    isLoading.value = true
+
+    try {
+      const { status, data } = await API.products.getProductsByCategory(params, categoryId)
+      if (status === 200) products.value = data
+    } catch (error) {
+      products.value = []
+      console.log(error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   const getProductById = async (id: number) => {
     isLoading.value = true
 
@@ -80,6 +94,7 @@ export const useProductsStore = defineStore('productsStore', () => {
     getProductById,
     deleteProduct,
     addProduct,
-    updateProduct
+    updateProduct,
+    dispatchGetProductsByCategory
   }
 })
