@@ -12,8 +12,7 @@ export const useProductsStore = defineStore('productsStore', () => {
     isLoading.value = true
 
     try {
-      const { status, data } = await API.products.getProducts(params)
-      if (status === 200) products.value = data
+      products.value = await getProducts(params)
     } catch (error) {
       products.value = []
       console.log(error)
@@ -87,6 +86,17 @@ export const useProductsStore = defineStore('productsStore', () => {
     }
   }
 
+  const getProducts = async (params: IQueryParams): Promise<IProduct[]> => {
+    try {
+      const { status, data } = await API.products.getProducts(params)
+      if (status === 200) return data
+    } catch (error) {
+      console.log(error)
+    }
+
+    return []
+  }
+
   return {
     products,
     isLoading,
@@ -95,6 +105,7 @@ export const useProductsStore = defineStore('productsStore', () => {
     deleteProduct,
     addProduct,
     updateProduct,
-    dispatchGetProductsByCategory
+    dispatchGetProductsByCategory,
+    getProducts
   }
 })

@@ -2,16 +2,25 @@
   <div class="flex flex-col gap-8">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Products</h1>
-      <BaseButton
-        type="filled"
-        @click="
-          () => {
-            $router.push({ name: 'Products Add' })
-          }
-        "
-      >
-        <span class="text-sm font-semibold">New Product</span>
-      </BaseButton>
+      <div class="flex flex-row gap-4">
+        <BaseButton type="outlined" class="w-24" @click="handleExport">
+          <i v-if="isLoadingExport" class="pi pi-spinner text-xl animate-spin" />
+          <div v-else class="flex flex-row gap-2 items-center">
+            <i class="pi pi-download" />
+            <span class="text-sm font-semibold">Export</span>
+          </div>
+        </BaseButton>
+        <BaseButton
+          type="filled"
+          @click="
+            () => {
+              $router.push({ name: 'Products Add' })
+            }
+          "
+        >
+          <span class="text-sm font-semibold">New Product</span>
+        </BaseButton>
+      </div>
     </div>
 
     <div class="flex flex-col text-sm gap-2">
@@ -151,11 +160,13 @@ import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
 import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
+import { usePdfGenerator } from '@/composables/usePdfGenerator'
 import { useCategoriesStore } from '@/stores/categories'
 import { useProductsStore } from '@/stores/products'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 
+const pdfGenerator = usePdfGenerator()
 const productsStore = useProductsStore()
 const categoriesStore = useCategoriesStore()
 const isLoading: ComputedRef<boolean> = computed(
@@ -173,6 +184,7 @@ const headers = ref([
 ])
 const isDeleteModalVisible: Ref<boolean> = ref(false)
 const deleteId: Ref<number> = ref(NaN)
+const isLoadingExport: Ref<boolean> = ref(false)
 
 const data: ComputedRef<(string | number)[][]> = computed(() => {
   return productsStore.products.map((p) => {
@@ -225,24 +237,7 @@ onMounted(async () => {
 })
 
 const fetchProducts = async () => {
-  const queryParams: Ref<IQueryParams> = ref({
-    offset: (pagination.value.page - 1) * pagination.value.perPage,
-    limit: pagination.value.perPage
-  })
-
-  if (filters.value.categoryId !== categoriesOptions.value[0].key) {
-    queryParams.value['categoryId'] = filters.value.categoryId
-  }
-
-  if (filters.value.keyword) {
-    queryParams.value['title'] = filters.value.keyword
-  }
-
-  if (filters.value.price) {
-    queryParams.value['price'] = filters.value.price
-  }
-
-  await productsStore.dispatchGetProducts(queryParams.value)
+  await productsStore.dispatchGetProducts(getQueryParams(true))
 }
 
 const fetchCategories = async () => {
@@ -300,5 +295,47 @@ const handleDeleteProduct = async () => {
   }
 
   await fetchProducts()
+}
+
+const getQueryParams = (withPagination: boolean = false): IQueryParams => {
+  const queryParams: IQueryParams = {}
+
+  if (withPagination) {
+    ;(queryParams['offset'] = (pagination.value.page - 1) * pagination.value.perPage),
+      (queryParams['limit'] = pagination.value.perPage)
+  }
+
+  if (filters.value.categoryId !== categoriesOptions.value[0].key) {
+    queryParams['categoryId'] = filters.value.categoryId
+  }
+
+  if (filters.value.keyword) {
+    queryParams['title'] = filters.value.keyword
+  }
+
+  if (filters.value.price) {
+    queryParams['price'] = filters.value.price
+  }
+
+  return queryParams
+}
+
+const handleExport = async (): Promise<void> => {
+  isLoadingExport.value = true
+  const exportData = await productsStore.getProducts(getQueryParams())
+
+  const headers = ['', 'Title', 'Category', 'Price']
+
+  const pdfData = exportData.map((product, index) => {
+    return [String(index + 1), product.title, product.category.name, `$${product.price}`]
+  })
+
+  pdfGenerator.generate(
+    headers,
+    pdfData,
+    'Backoffice Products Data',
+    `${dayjs().format('YYYY-MM-DD-HH-mm-ss')}-products-data`
+  )
+  isLoadingExport.value = false
 }
 </script>
