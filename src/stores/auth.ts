@@ -26,8 +26,19 @@ export const useAuthStore = defineStore('auth', () => {
     return false
   }
 
+  const logout = async (): Promise<void> => {
+    isLoading.value = true
+
+    router.push({ name: 'Login' })
+    sessionStorage.clear()
+    localStorage.removeItem('accessToken')
+
+    isLoading.value = false
+  }
+
   return {
     isLoading,
-    login
+    login,
+    logout
   }
 })
