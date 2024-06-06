@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import MainLayout from '@/layouts/MainLayout.vue'
-import { routes } from './routes'
+import { routes } from './private'
+import { publicRoutes } from './public'
 
 const getRoutes = (): RouteRecordRaw[] => {
-  const result: RouteRecordRaw[] = []
+  let result: RouteRecordRaw[] = []
 
   routes.forEach((route) => {
     if (route.children.length === 0) {
@@ -25,6 +26,7 @@ const getRoutes = (): RouteRecordRaw[] => {
     }
   })
 
+  result = [...result, ...publicRoutes]
   return result
 }
 
