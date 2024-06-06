@@ -19,24 +19,75 @@
         ></i>
       </button>
 
-      <!-- User Button -->
-      <button
-        class="flex flex-row justify-between items-center max-w-36 px-2 py-1 gap-2 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800"
-      >
-        <div class="flex flex-row items-center gap-2">
-          <i
-            class="pi text-neutral-700 dark:text-neutral-300 pi-user bg-neutral-100 dark:bg-neutral-900 p-2 rounded-full border border-neutral-300 dark:border-neutral-700"
-          />
-          <span class="font-semibold text-sm text-neutral-700 dark:text-neutral-300">John Doe</span>
+      <!-- Profile Button -->
+      <div ref="profileEl">
+        <button
+          class="flex flex-row justify-between items-center w-44 px-2 py-1 gap-2 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800"
+          @click="toggleProfileMenu"
+        >
+          <div class="flex flex-row items-center gap-2">
+            <i
+              class="pi text-neutral-700 dark:text-neutral-300 pi-user bg-neutral-100 dark:bg-neutral-900 p-2 rounded-full border border-neutral-300 dark:border-neutral-700"
+            />
+            <span class="font-semibold text-sm text-neutral-700 dark:text-neutral-300"
+              >John Doe</span
+            >
+          </div>
+          <i class="pi pi-chevron-down" />
+        </button>
+
+        <!-- Profile Menu -->
+        <div
+          v-show="isProfileVisible"
+          class="flex flex-col absolute right-6 w-60 mt-4 p-2 gap-2 rounded shadow-sm border dark:border-neutral-700 bg-white dark:bg-neutral-800 divide-y dark:divide-neutral-700"
+        >
+          <div class="flex flex-row items-center gap-2 p-2">
+            <i
+              class="pi text-neutral-700 dark:text-neutral-300 pi-user p-2 rounded-full border border-neutral-300 dark:border-neutral-700"
+            />
+            <span>John Doe</span>
+          </div>
+          <div class="flex flex-col">
+            <BaseButton type="vanilla" class="font-bold" @click="handleLogout">Logout</BaseButton>
+          </div>
         </div>
-        <i class="pi pi-chevron-down" />
-      </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useAppConfig } from '@/stores/appConfig'
+import BaseButton from './buttons/BaseButton.vue'
+import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 const appConfig = useAppConfig()
+const authStore = useAuthStore()
+const isProfileVisible: Ref<boolean> = ref(false)
+const profileEl: Ref<HTMLDivElement | null> = ref(null)
+
+onMounted(() => {
+  window.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('click', handleClickOutside)
+})
+
+const toggleProfileMenu = (): void => {
+  isProfileVisible.value = !isProfileVisible.value
+}
+
+const handleClickOutside = (event: Event): void => {
+  if (!profileEl.value) return
+
+  if (!profileEl.value.contains(event.target as Node)) {
+    isProfileVisible.value = false
+  }
+}
+
+const handleLogout = (): void => {
+  authStore.logout()
+}
 </script>

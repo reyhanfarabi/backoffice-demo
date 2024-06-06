@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { routes } from '@/router/routes'
+import { routes } from '@/router/private'
 import { ref } from 'vue'
 
 const newRoutes = ref(

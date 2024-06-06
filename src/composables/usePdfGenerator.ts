@@ -13,7 +13,6 @@ interface IUsePdfGenerator {
 
 export const usePdfGenerator = (): IUsePdfGenerator => {
   const DEFAULT_FONT_SIZE = 16
-  const doc = new jsPDF()
 
   const generate = (
     headers: Array<string>,
@@ -21,6 +20,8 @@ export const usePdfGenerator = (): IUsePdfGenerator => {
     title: string = 'Table Data',
     filename: string = 'productsData'
   ) => {
+    const doc = new jsPDF()
+
     doc.setFontSize(DEFAULT_FONT_SIZE)
     doc.text(title, 14, 18)
 
