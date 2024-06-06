@@ -28,6 +28,6 @@ const props = withDefaults(defineProps<IBaseButtonProps>(), {
 }
 
 .vanilla {
-  @apply p-2 rounded hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10 border border-neutral-800/20;
+  @apply p-2 rounded hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10;
 }
 </style>
