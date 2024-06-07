@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-row justify-between items-center px-6 h-16 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 shadow"
+    class="flex flex-row justify-between items-center px-6 min-h-16 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 shadow"
   >
     <RouterLink to="/">
       <h1 class="font-bold text-lg">Backoffice</h1>
