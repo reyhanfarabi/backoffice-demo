@@ -2,7 +2,14 @@
   <div class="flex flex-col gap-8 pb-20">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Categories</h1>
-      <BaseButton type="filled" @click="$router.push({ name: 'Categories Add' })">
+      <BaseButton
+        type="filled"
+        @click="
+          () => {
+            isAddModalVisible = true
+          }
+        "
+      >
         <span class="text-sm font-semibold">New Category</span>
       </BaseButton>
     </div>
@@ -71,6 +78,15 @@
         </div>
       </div>
     </BaseModals>
+
+    <AddModal
+      v-if="isAddModalVisible"
+      @close-button-event="
+        () => {
+          isAddModalVisible = false
+        }
+      "
+    />
   </div>
 </template>
 
@@ -82,11 +98,13 @@ import BaseTable from '@/components/table/BaseTable.vue'
 import { useCategoriesStore } from '@/stores/categories'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
+import AddModal from './components/AddModal.vue'
 
 const categoriesStore = useCategoriesStore()
 const headers = ref(['ID', 'Name', 'Images', 'Created At', 'Updated At', ''])
 const isDeleteModalVisible: Ref<boolean> = ref(false)
 const deleteId: Ref<number | null> = ref(null)
+const isAddModalVisible: Ref<boolean> = ref(false)
 
 const data: ComputedRef<(string | number)[][]> = computed(() => {
   return categoriesStore.categories.map((c) => {
