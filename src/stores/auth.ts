@@ -1,5 +1,6 @@
 import { API } from '@/api'
 import type { ILoginPayload } from '@/interfaces/auth'
+import type { IUser } from '@/interfaces/user'
 import router from '@/router'
 import { defineStore } from 'pinia'
 import { ref, type Ref } from 'vue'
@@ -36,9 +37,25 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = false
   }
 
+  const getCurrentUser = async (): Promise<IUser> => {
+    isLoading.value = true
+
+    try {
+      const { status, data } = await API.auth.whoAmI()
+      if (status === 200) return data
+    } catch (e) {
+      console.log(e)
+    } finally {
+      isLoading.value = false
+    }
+
+    return {} as IUser
+  }
+
   return {
     isLoading,
     login,
-    logout
+    logout,
+    getCurrentUser
   }
 })
