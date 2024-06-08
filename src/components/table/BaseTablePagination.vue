@@ -15,13 +15,13 @@
         />
       </div>
 
-      <BaseButton type="outlined" @click="$emit('prevPageEvent')">
+      <BaseButton variant="outlined" @click="$emit('prevPageEvent')">
         <i class="pi pi-angle-left" />
       </BaseButton>
       <div>
         <span>Page {{ props.page }}</span>
       </div>
-      <BaseButton type="outlined" @click="$emit('nextPageEvent')">
+      <BaseButton variant="outlined" @click="$emit('nextPageEvent')">
         <i class="pi pi-angle-right" />
       </BaseButton>
     </div>

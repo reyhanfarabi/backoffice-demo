@@ -3,7 +3,7 @@
     <div class="flex flex-row w-full gap-4 items-center justify-between">
       <BaseButton
         class="flex items-center gap-2 w-fit text-xs"
-        type="outlined"
+        variant="outlined"
         @click="handleBackToListPage"
       >
         <i class="pi pi-arrow-left" />
@@ -11,7 +11,7 @@
       <div class="flex flex-row items-center">
         <div class="flex gap-2">
           <BaseButton
-            type="vanilla"
+            variant="vanilla"
             @click="
               () => {
                 $router.push({ name: 'Products Edit', params: { id: $route.params.id } })
@@ -69,10 +69,12 @@
       <div class="flex flex-col gap-4 p-4">
         <span>Are you sure you want to delete product?</span>
         <div class="flex flex-row gap-2">
-          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+          <BaseButton class="flex-1" variant="filled" @click="handleCloseDeleteModal"
             >Cancel</BaseButton
           >
-          <BaseButton class="flex-1" type="outlined" @click="handleDeleteProduct">Yes</BaseButton>
+          <BaseButton class="flex-1" variant="outlined" @click="handleDeleteProduct"
+            >Yes</BaseButton
+          >
         </div>
       </div>
     </BaseModals>

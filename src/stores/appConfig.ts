@@ -10,7 +10,7 @@ export const useAppConfig = defineStore('appConfig', () => {
     updateCurrentColorVal()
   }
 
-  const toogleColorMode = (): void => {
+  const toggleColorMode = (): void => {
     switchColorMode()
     updateCurrentColorVal()
   }
@@ -19,5 +19,5 @@ export const useAppConfig = defineStore('appConfig', () => {
     isDarkMode.value = localStorage.theme === 'dark'
   }
 
-  return { isDarkMode, setColorMode, toogleColorMode }
+  return { isDarkMode, setColorMode, toggleColorMode }
 })

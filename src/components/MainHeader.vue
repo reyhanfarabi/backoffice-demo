@@ -8,16 +8,7 @@
 
     <div class="flex flex-row gap-2">
       <!-- Theme Switcher -->
-      <button
-        aria-label="Toggle between dark mode and light mode"
-        @click="appConfig.toogleColorMode()"
-      >
-        <i
-          aria-hidden="true"
-          class="pi rounded p-3 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-          :class="[appConfig.isDarkMode ? 'pi-moon' : 'pi-sun']"
-        ></i>
-      </button>
+      <ThemeSwitcher class="size-10" />
 
       <!-- Profile Button -->
       <div ref="profileEl">
@@ -67,7 +58,9 @@
             </div>
           </div>
           <div class="flex flex-col">
-            <BaseButton type="vanilla" class="font-bold" @click="handleLogout">Logout</BaseButton>
+            <BaseButton variant="vanilla" class="font-bold" @click="handleLogout"
+              >Logout</BaseButton
+            >
           </div>
         </div>
       </div>
@@ -76,13 +69,12 @@
 </template>
 
 <script setup lang="ts">
-import { useAppConfig } from '@/stores/appConfig'
 import BaseButton from './buttons/BaseButton.vue'
 import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import type { IUser } from '@/interfaces/user'
+import ThemeSwitcher from './buttons/ThemeSwitcher.vue'
 
-const appConfig = useAppConfig()
 const authStore = useAuthStore()
 const isProfileVisible: Ref<boolean> = ref(false)
 const profileEl: Ref<HTMLDivElement | null> = ref(null)

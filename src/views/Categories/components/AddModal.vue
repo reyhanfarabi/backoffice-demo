@@ -1,7 +1,7 @@
 <template>
   <BaseModals>
     <div class="flex flex-col w-[32rem]">
-      <BaseButton type="vanilla" class="self-end" @click="handleCloseAddModal">
+      <BaseButton variant="vanilla" class="self-end" @click="handleCloseAddModal">
         <i class="pi pi-times" />
       </BaseButton>
 
@@ -52,7 +52,7 @@
           </div>
         </div>
         <BaseButton
-          type="filled"
+          variant="filled"
           @click="handleOpenConfirmModal"
           :disabled="categoriesStore.isLoading"
         >
@@ -69,10 +69,10 @@
           <span class="font-semibold">{{ newData.name }}</span> category?</span
         >
         <div class="flex flex-row gap-2">
-          <BaseButton class="flex-1" type="filled" @click="handleCloseConfirmSaveModal"
+          <BaseButton class="flex-1" variant="filled" @click="handleCloseConfirmSaveModal"
             >Cancel</BaseButton
           >
-          <BaseButton class="flex-1" type="outlined" @click="handleSave">Yes</BaseButton>
+          <BaseButton class="flex-1" variant="outlined" @click="handleSave">Yes</BaseButton>
         </div>
       </div>
     </BaseModals>
@@ -91,7 +91,7 @@
         <div class="flex flex-row gap-2">
           <BaseButton
             class="flex-1"
-            type="filled"
+            variant="filled"
             @click="
               () => {
                 isConfirmCloseModalVisible = false
@@ -99,7 +99,7 @@
             "
             >Cancel
           </BaseButton>
-          <BaseButton class="flex-1" type="outlined" @click="emit('closeButtonEvent')"
+          <BaseButton class="flex-1" variant="outlined" @click="emit('closeButtonEvent')"
             >Yes</BaseButton
           >
         </div>

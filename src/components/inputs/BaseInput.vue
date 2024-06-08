@@ -13,13 +13,14 @@
         :value="modelValue"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       />
-      <button
+      <BaseButton
+        type="button"
         v-if="isInputTypePassword()"
         class="password-button"
         @click="togglePasswordVisibility"
       >
         <i class="pi pi-eye" />
-      </button>
+      </BaseButton>
     </div>
     <div
       v-if="props.isError"
@@ -33,6 +34,7 @@
 
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
+import BaseButton from '../buttons/BaseButton.vue'
 
 export interface IBaseInputProps {
   isError: boolean
