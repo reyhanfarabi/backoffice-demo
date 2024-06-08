@@ -1,8 +1,11 @@
 <template>
   <div
-    class="w-screen h-screen flex justify-center items-center text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-900 font-roboto"
+    class="w-screen h-screen flex justify-center items-center text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-900 font-roboto transition-colors duration-400"
   >
-    <form @submit.prevent="handleLogin" class="flex flex-col gap-6 bg-neutral-800 p-12 rounded">
+    <form
+      @submit.prevent="handleLogin"
+      class="flex flex-col gap-6 shadow-md bg-white dark:bg-neutral-800 p-12 rounded"
+    >
       <div class="flex flex-col gap-2 w-80">
         <span class="text-3xl font-bold">Login</span>
         <span class="text-sm text-neutral-400">Hi, Welcome to Backoffice Demo</span>
@@ -24,11 +27,14 @@
         <span v-else>Login</span>
       </BaseButton>
     </form>
+
+    <ThemeSwitcher class="absolute top-2 right-2" />
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/buttons/BaseButton.vue'
+import ThemeSwitcher from '@/components/buttons/ThemeSwitcher.vue'
 import BaseInput from '@/components/inputs/BaseInput.vue'
 import type { ILoginPayload } from '@/interfaces/auth'
 import { useAuthStore } from '@/stores/auth'
