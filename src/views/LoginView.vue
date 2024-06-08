@@ -2,7 +2,7 @@
   <div
     class="w-screen h-screen flex justify-center items-center text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-900 font-roboto"
   >
-    <for class="flex flex-col gap-6 bg-neutral-800 p-12 rounded">
+    <form @submit.prevent="handleLogin" class="flex flex-col gap-6 bg-neutral-800 p-12 rounded">
       <div class="flex flex-col gap-2 w-80">
         <span class="text-3xl font-bold">Login</span>
         <span class="text-sm text-neutral-400">Hi, Welcome to Backoffice Demo</span>
@@ -19,11 +19,11 @@
         <i class="pi pi-exclamation-triangle" />
         <span>Invalid email or password.</span>
       </div>
-      <BaseButton variant="filled" @click="handleLogin">
+      <BaseButton type="submit" variant="filled" @click="handleLogin">
         <i v-if="authStore.isLoading" class="pi pi-spinner text-xl animate-spin" />
         <span v-else>Login</span>
       </BaseButton>
-    </for>
+    </form>
   </div>
 </template>
 
