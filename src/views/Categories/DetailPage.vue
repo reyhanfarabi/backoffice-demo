@@ -3,7 +3,7 @@
     <div class="flex flex-row justify-between w-full gap-4 items-center">
       <BaseButton
         class="flex items-center gap-2 w-fit text-xs"
-        type="outlined"
+        variant="outlined"
         @click="handleBackToListPage"
       >
         <i class="pi pi-arrow-left" />
@@ -11,7 +11,7 @@
       <div class="flex flex-row">
         <div class="flex gap-2">
           <BaseButton
-            type="vanilla"
+            variant="vanilla"
             @click="
               () => {
                 $router.push({ name: 'Categories Edit', params: { id: $route.params.id } })
@@ -91,7 +91,7 @@
         <template #7="{ data }">
           <div class="flex justify-center gap-2">
             <BaseButton
-              type="vanilla"
+              variant="vanilla"
               @click="
                 () => {
                   $router.push({ name: 'Products Detail', params: { id: data } })
@@ -115,10 +115,12 @@
           <span class="font-semibold">{{ data?.name }}</span> category?</span
         >
         <div class="flex flex-row gap-2">
-          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+          <BaseButton class="flex-1" variant="filled" @click="handleCloseDeleteModal"
             >Cancel</BaseButton
           >
-          <BaseButton class="flex-1" type="outlined" @click="handleDeleteCategory">Yes</BaseButton>
+          <BaseButton class="flex-1" variant="outlined" @click="handleDeleteCategory"
+            >Yes</BaseButton
+          >
         </div>
       </div>
     </BaseModals>

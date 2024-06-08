@@ -1,16 +1,16 @@
 <template>
-  <button class="flex justify-center items-center" :class="props.type">
+  <button class="flex justify-center items-center" :class="props.variant">
     <slot />
   </button>
 </template>
 
 <script setup lang="ts">
 export interface IBaseButtonProps {
-  type: 'filled' | 'outlined' | 'nostyle' | 'vanilla'
+  variant: 'filled' | 'outlined' | 'nostyle' | 'vanilla'
 }
 
 const props = withDefaults(defineProps<IBaseButtonProps>(), {
-  type: 'nostyle'
+  variant: 'nostyle'
 })
 </script>
 
