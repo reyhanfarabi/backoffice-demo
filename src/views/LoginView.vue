@@ -19,7 +19,7 @@
         <i class="pi pi-exclamation-triangle" />
         <span>Invalid email or password.</span>
       </div>
-      <BaseButton type="filled" @click="handleLogin">
+      <BaseButton variant="filled" @click="handleLogin">
         <i v-if="authStore.isLoading" class="pi pi-spinner text-xl animate-spin" />
         <span v-else>Login</span>
       </BaseButton>

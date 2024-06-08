@@ -67,7 +67,9 @@
             </div>
           </div>
           <div class="flex flex-col">
-            <BaseButton type="vanilla" class="font-bold" @click="handleLogout">Logout</BaseButton>
+            <BaseButton variant="vanilla" class="font-bold" @click="handleLogout"
+              >Logout</BaseButton
+            >
           </div>
         </div>
       </div>

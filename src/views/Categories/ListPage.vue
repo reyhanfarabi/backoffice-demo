@@ -3,7 +3,7 @@
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Categories</h1>
       <BaseButton
-        type="filled"
+        variant="filled"
         @click="
           () => {
             isAddModalVisible = true
@@ -24,7 +24,7 @@
         <template #5="{ data }">
           <div class="flex justify-center gap-2">
             <BaseButton
-              type="vanilla"
+              variant="vanilla"
               @click="
                 () => {
                   $router.push({ name: 'Categories Detail', params: { id: data } })
@@ -34,7 +34,7 @@
               <i class="pi pi-ellipsis-h" />
             </BaseButton>
             <BaseButton
-              type="vanilla"
+              variant="vanilla"
               @click="
                 () => {
                   $router.push({ name: 'Categories Edit', params: { id: data } })
@@ -71,10 +71,12 @@
           <span class="font-semibold">{{ getCategoryNameById() }}</span> category?</span
         >
         <div class="flex flex-row gap-2">
-          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+          <BaseButton class="flex-1" variant="filled" @click="handleCloseDeleteModal"
             >Cancel</BaseButton
           >
-          <BaseButton class="flex-1" type="outlined" @click="handleDeleteCategory">Yes</BaseButton>
+          <BaseButton class="flex-1" variant="outlined" @click="handleDeleteCategory"
+            >Yes</BaseButton
+          >
         </div>
       </div>
     </BaseModals>

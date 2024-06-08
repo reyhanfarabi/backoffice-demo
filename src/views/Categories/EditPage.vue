@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-8 pb-20">
     <BaseButton
       class="flex items-center gap-2 w-fit text-xs"
-      type="outlined"
+      variant="outlined"
       @click="handleBackToListPage"
     >
       <i class="pi pi-arrow-left" />
@@ -13,7 +13,7 @@
         <h1 class="text-2xl font-bold">Edit Categories</h1>
         <BaseButton
           class="self-end w-28"
-          type="filled"
+          variant="filled"
           @click="handleOpenAddModal"
           :disabled="categoriesStore.isLoading"
         >
@@ -72,8 +72,10 @@
           <span class="font-semibold">{{ data.name }}</span> category?</span
         >
         <div class="flex flex-row gap-2">
-          <BaseButton class="flex-1" type="filled" @click="handleCloseAddModal">Cancel</BaseButton>
-          <BaseButton class="flex-1" type="outlined" @click="handleSave">Yes</BaseButton>
+          <BaseButton class="flex-1" variant="filled" @click="handleCloseAddModal"
+            >Cancel</BaseButton
+          >
+          <BaseButton class="flex-1" variant="outlined" @click="handleSave">Yes</BaseButton>
         </div>
       </div>
     </BaseModals>

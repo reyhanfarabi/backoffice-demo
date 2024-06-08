@@ -3,7 +3,7 @@
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Products</h1>
       <div class="flex flex-row gap-4">
-        <BaseButton type="outlined" class="w-24" @click="handleExport">
+        <BaseButton variant="outlined" class="w-24" @click="handleExport">
           <i v-if="isLoadingExport" class="pi pi-spinner text-xl animate-spin" />
           <div v-else class="flex flex-row gap-2 items-center">
             <i class="pi pi-download" />
@@ -11,7 +11,7 @@
           </div>
         </BaseButton>
         <BaseButton
-          type="filled"
+          variant="filled"
           @click="
             () => {
               $router.push({ name: 'Products Add' })
@@ -65,7 +65,7 @@
         <div class="flex items-end">
           <BaseButton
             class="flex items-center px-2 py-1 rounded text-neutral-900 dark:text-neutral-100 hover:bg-neutral-800/10 dark:hover:bg-neutral-200/10 border border-neutral-800/20 dark:border-neutral-200/20"
-            type="nostyle"
+            variant="nostyle"
             @click="resetFilter"
           >
             <span>Reset filter</span>
@@ -96,7 +96,7 @@
         <template #7="{ data }">
           <div class="flex justify-center gap-2">
             <BaseButton
-              type="vanilla"
+              variant="vanilla"
               @click="
                 () => {
                   $router.push({ name: 'Products Detail', params: { id: data } })
@@ -106,7 +106,7 @@
               <i class="pi pi-ellipsis-h" />
             </BaseButton>
             <BaseButton
-              type="vanilla"
+              variant="vanilla"
               @click="
                 () => {
                   $router.push({ name: 'Products Edit', params: { id: data } })
@@ -138,10 +138,12 @@
       <div class="flex flex-col gap-4 p-4">
         <span>Are you sure you want to delete product?</span>
         <div class="flex flex-row gap-2">
-          <BaseButton class="flex-1" type="filled" @click="handleCloseDeleteModal"
+          <BaseButton class="flex-1" variant="filled" @click="handleCloseDeleteModal"
             >Cancel</BaseButton
           >
-          <BaseButton class="flex-1" type="outlined" @click="handleDeleteProduct">Yes</BaseButton>
+          <BaseButton class="flex-1" variant="outlined" @click="handleDeleteProduct"
+            >Yes</BaseButton
+          >
         </div>
       </div>
     </BaseModals>
