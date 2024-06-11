@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
-    name: Deploying Project
+    name: Build and Deploy
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools
       - name: Install Packages
         run: yarn
       - name: Build Project
