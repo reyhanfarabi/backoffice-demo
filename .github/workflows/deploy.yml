@@ -12,7 +12,6 @@ jobs:
     environment: production
     env:
       VITE_API_URL: ${{ vars.VITE_API_URL }}
-      TEST_VAR: ${{ vars.TEST_VAR }}
     steps:
       - name: Test Print ENV Var
         run: echo "Hello $TEST_VAR"
