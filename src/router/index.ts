@@ -45,8 +45,7 @@ router.beforeEach(async (to) => {
   }
 
   try {
-    const response = await API.auth.whoAmI()
-    console.log(response)
+    await API.auth.whoAmI()
     return true
   } catch (e) {
     console.log(e)
