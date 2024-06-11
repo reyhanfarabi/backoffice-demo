@@ -42,8 +42,8 @@ import { ref, watch, type Ref } from 'vue'
 
 const authStore = useAuthStore()
 const loginData: Ref<ILoginPayload> = ref({
-  email: '',
-  password: ''
+  email: 'admin@mail.com',
+  password: 'admin123'
 })
 const isError: Ref<boolean> = ref(false)
 
