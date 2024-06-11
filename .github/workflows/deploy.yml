@@ -13,8 +13,6 @@ jobs:
     env:
       VITE_API_URL: ${{ vars.VITE_API_URL }}
     steps:
-      - name: Test Print ENV Var
-        run: echo "Hello $TEST_VAR"
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Use Node version 20
