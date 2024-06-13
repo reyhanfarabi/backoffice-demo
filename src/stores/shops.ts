@@ -98,6 +98,18 @@ export const useShopsStore = defineStore('shop', () => {
     isLoading.value = false
   }
 
+  const deleteShopLocation = (id: string): void => {
+    isLoading.value = true
+
+    const index = shops.value.findIndex((shop: IShop) => shop.id === id)
+    if (index !== -1) {
+      shops.value.splice(index, 1)
+      updateShopsOnLocalStorage()
+    }
+
+    isLoading.value = false
+  }
+
   const updateShopsOnLocalStorage = (): void => {
     localStorage.setItem('shops_data', JSON.stringify(shops.value))
   }
@@ -105,6 +117,7 @@ export const useShopsStore = defineStore('shop', () => {
   return {
     getShops,
     isLoading,
-    addNewShopLocation
+    addNewShopLocation,
+    deleteShopLocation
   }
 })
