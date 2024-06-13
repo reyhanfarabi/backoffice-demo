@@ -131,7 +131,7 @@ const handleDeleteShop = async () => {
   handleCloseDeleteModal()
 
   if (route.params.id) {
-    shopStore.deleteShopLocation(String(route.params.id))
+    shopStore.deleteShop(String(route.params.id))
     isDeleteModalVisible.value = false
   }
 

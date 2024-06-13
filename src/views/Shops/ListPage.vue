@@ -89,9 +89,7 @@
           <BaseButton class="flex-1" variant="filled" @click="handleCloseDeleteModal"
             >Cancel</BaseButton
           >
-          <BaseButton class="flex-1" variant="outlined" @click="handleDeleteCategory"
-            >Yes</BaseButton
-          >
+          <BaseButton class="flex-1" variant="outlined" @click="handleDeleteShop">Yes</BaseButton>
         </div>
       </div>
     </BaseModals>
@@ -152,9 +150,9 @@ const getShopNameById = (): string => {
   return shopsStore.getShops().find((s) => s.id === deleteId.value)?.name || ''
 }
 
-const handleDeleteCategory = (): void => {
+const handleDeleteShop = (): void => {
   if (!deleteId.value) return
-  shopsStore.deleteShopLocation(deleteId.value)
+  shopsStore.deleteShop(deleteId.value)
   isDeleteModalVisible.value = false
 }
 </script>

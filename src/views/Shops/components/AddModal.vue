@@ -157,7 +157,7 @@ const handleSave = async (): Promise<void> => {
   const result = await $v.value.$validate()
 
   if (result) {
-    shopsStore.addNewShopLocation({
+    shopsStore.addShop({
       name: newData.value.name.trim(),
       coordinate: leafletMap.getCenterMapCoordinate()
     })

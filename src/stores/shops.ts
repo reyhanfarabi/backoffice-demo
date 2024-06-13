@@ -88,7 +88,7 @@ export const useShopsStore = defineStore('shop', () => {
     return shop
   }
 
-  const addNewShopLocation = (payload: IShopPayload): void => {
+  const addShop = (payload: IShopPayload): void => {
     isLoading.value = true
 
     const newData: IShop = {
@@ -104,7 +104,7 @@ export const useShopsStore = defineStore('shop', () => {
     isLoading.value = false
   }
 
-  const deleteShopLocation = (id: string): void => {
+  const deleteShop = (id: string): void => {
     isLoading.value = true
 
     const index = shops.value.findIndex((shop: IShop) => shop.id === id)
@@ -138,8 +138,8 @@ export const useShopsStore = defineStore('shop', () => {
   return {
     getShops,
     isLoading,
-    addNewShopLocation,
-    deleteShopLocation,
+    addShop,
+    deleteShop,
     getShopById,
     updateShop
   }
