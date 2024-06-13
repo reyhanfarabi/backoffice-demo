@@ -20,7 +20,15 @@
     <div ref="map" class="w-full h-96 z-0"></div>
 
     <div class="flex flex-col w-full">
-      <BaseTable :headers="headers" :datalist="data" :is-loading="false">
+      <BaseTable
+        :headers="headers"
+        :datalist="data"
+        :is-loading="false"
+        :pagination="pagination"
+        @prev-page-event="handleChangePage('prev')"
+        @next-page-event="handleChangePage('next')"
+        @change-per-page-event="(val: number) => handleChangePerPage(val)"
+      >
         <template #2="{ data }">
           <BaseButton variant="filled" @click="handleShowOnMap(data.latitude, data.longitude)"
             >Show on Map</BaseButton
@@ -99,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ICoordinate } from '@/common/types'
+import type { ICoordinate, IOptions } from '@/common/types'
 import BaseButton from '@/components/buttons/BaseButton.vue'
 import LoadingFullscreen from '@/components/loadings/LoadingFullscreen.vue'
 import BaseTable from '@/components/table/BaseTable.vue'
@@ -110,6 +118,7 @@ import dayjs from 'dayjs'
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
 import AddModal from './components/AddModal.vue'
 import BaseModals from '@/components/modals/BaseModals.vue'
+import type { IBaseTablePagination } from '@/components/table/BaseTablePagination.vue'
 
 const shopsStore = useShopsStore()
 const leafletMap = useLeafletMap()
@@ -123,7 +132,7 @@ const headers = ref(['#', 'Name', 'Location', 'Created At', 'Updated At', ''])
 const data: ComputedRef<(string | number | ICoordinate)[][]> = computed(() => {
   return shopsStore.getShops().map((s: IShop, index: number) => {
     return [
-      index + 1,
+      index + 1 + (pagination.value.page - 1) * pagination.value.perPage,
       s.name,
       s.coordinate,
       dayjs(s.createdAt).format('YYYY-MM-DD HH:mm:ss Z'),
@@ -131,6 +140,18 @@ const data: ComputedRef<(string | number | ICoordinate)[][]> = computed(() => {
       s.id
     ]
   })
+})
+
+const perPageOptions: Ref<IOptions[]> = ref([
+  { key: '5', value: '5' },
+  { key: '10', value: '10' },
+  { key: '20', value: '20' }
+])
+
+const pagination: Ref<IBaseTablePagination> = ref({
+  page: 1,
+  perPage: Number(perPageOptions.value[0].key),
+  perPageOptions: perPageOptions
 })
 
 onMounted(() => {
@@ -154,5 +175,27 @@ const handleDeleteShop = (): void => {
   if (!deleteId.value) return
   shopsStore.deleteShop(deleteId.value)
   isDeleteModalVisible.value = false
+}
+
+const handleChangePage = (direction: 'prev' | 'next') => {
+  if (direction === 'prev') {
+    if (pagination.value.page > 1) {
+      pagination.value.page--
+      shopsStore.setPaginationData(pagination.value.page, pagination.value.perPage)
+    }
+  } else if (direction === 'next') {
+    if (
+      shopsStore.getShops().length <= pagination.value.perPage &&
+      shopsStore.getShops().length !== 0
+    ) {
+      pagination.value.page++
+      shopsStore.setPaginationData(pagination.value.page, pagination.value.perPage)
+    }
+  }
+}
+
+const handleChangePerPage = (perPageVal: number) => {
+  pagination.value.perPage = perPageVal
+  shopsStore.setPaginationData(pagination.value.page, pagination.value.perPage)
 }
 </script>
