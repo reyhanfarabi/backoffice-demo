@@ -31,7 +31,14 @@
             <BaseButton variant="vanilla">
               <i class="pi pi-ellipsis-h" />
             </BaseButton>
-            <BaseButton variant="vanilla">
+            <BaseButton
+              variant="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Shops Edit', params: { id: data } })
+                }
+              "
+            >
               <i class="pi pi-pencil" />
             </BaseButton>
             <BaseButton

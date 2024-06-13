@@ -82,6 +82,12 @@ export const useShopsStore = defineStore('shop', () => {
     return shops.value
   }
 
+  const getShopById = (id: string): IShop | null => {
+    const shop = shops.value.find((s: IShop) => s.id === id)
+    if (!shop) return null
+    return shop
+  }
+
   const addNewShopLocation = (payload: IShopPayload): void => {
     isLoading.value = true
 
@@ -110,6 +116,21 @@ export const useShopsStore = defineStore('shop', () => {
     isLoading.value = false
   }
 
+  const updateShop = (id: string, payload: IShopPayload): void => {
+    isLoading.value = true
+
+    const shop = shops.value.find((shop: IShop) => shop.id === id)
+    if (shop) {
+      shop.name = payload.name.trim()
+      shop.coordinate = payload.coordinate
+      shop.updatedAt = new Date()
+
+      updateShopsOnLocalStorage()
+    }
+
+    isLoading.value = false
+  }
+
   const updateShopsOnLocalStorage = (): void => {
     localStorage.setItem('shops_data', JSON.stringify(shops.value))
   }
@@ -118,6 +139,8 @@ export const useShopsStore = defineStore('shop', () => {
     getShops,
     isLoading,
     addNewShopLocation,
-    deleteShopLocation
+    deleteShopLocation,
+    getShopById,
+    updateShop
   }
 })

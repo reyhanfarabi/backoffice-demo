@@ -2,7 +2,7 @@ import type { ICoordinate } from '@/common/types'
 import leaflet from 'leaflet'
 
 interface IUseLeafletMap {
-  init: (element: HTMLDivElement | null) => void
+  init: (element: HTMLDivElement | null, coordinate?: ICoordinate) => void
   showCoordinateOnMap: (lat: number, long: number) => void
   setMarkerCenterMap: () => void
   getCenterMapCoordinate: () => ICoordinate
@@ -12,8 +12,12 @@ export const useLeafletMap = (): IUseLeafletMap => {
   let map: leaflet.Map | null = null
   let marker: leaflet.Marker | null = null
 
-  const init = (element: HTMLDivElement | null): void => {
-    map = leaflet.map(element || 'map').locate({ setView: true, maxZoom: 16 })
+  const init = (element: HTMLDivElement | null, coordinate?: ICoordinate): void => {
+    if (coordinate) {
+      map = leaflet.map(element || 'map').setView([coordinate.latitude, coordinate.longitude], 12)
+    } else {
+      map = leaflet.map(element || 'map').locate({ setView: true, maxZoom: 16 })
+    }
 
     leaflet
       .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
