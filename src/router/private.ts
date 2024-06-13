@@ -6,6 +6,9 @@ import ProductsAddPage from '@/views/Products/AddPage.vue'
 import ProductsDetailPage from '@/views/Products/DetailPage.vue'
 import EditPage from '@/views/Products/EditPage.vue'
 import ProductsListPage from '@/views/Products/ListPage.vue'
+import ShopsDetailPage from '@/views/Shops/DetailPage.vue'
+import ShopEditPage from '@/views/Shops/EditPage.vue'
+import ShopsListPage from '@/views/Shops/ListPage.vue'
 import type { RouteComponent } from 'vue-router'
 
 export interface IRouteBase {
@@ -89,6 +92,32 @@ export const routes: IRoute[] = [
         path: '/edit/:id',
         name: 'Products Edit',
         component: EditPage
+      }
+    ]
+  },
+  {
+    path: '/shops',
+    name: 'Shops',
+    component: ShopsListPage,
+    icon: 'pi-shop',
+    meta: {
+      showChildRoute: false
+    },
+    children: [
+      {
+        path: '/',
+        name: 'Shops List',
+        component: ShopsListPage
+      },
+      {
+        path: '/edit/:id',
+        name: 'Shops Edit',
+        component: ShopEditPage
+      },
+      {
+        path: '/detail/:id',
+        name: 'Shops Detail',
+        component: ShopsDetailPage
       }
     ]
   }

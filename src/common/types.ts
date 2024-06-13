@@ -6,3 +6,8 @@ export interface IOptions {
 export interface IQueryParams {
   [k: string]: string | number
 }
+
+export interface ICoordinate {
+  latitude: number
+  longitude: number
+}

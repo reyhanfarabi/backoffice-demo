@@ -3,10 +3,11 @@
     <div class="flex flex-row w-full">
       <input
         ref="inputEl"
-        class="w-full px-2 py-1 rounded text-neutral-900 dark:text-neutral-100 bg-transparent border border-neutral-800/20 dark:border-neutral-200/20"
+        class="w-full px-2 py-1 rounded text-neutral-900 dark:text-neutral-100 bg-transparent"
         :class="[
           {
-            'rounded-r-none': isInputTypePassword()
+            'rounded-r-none': isInputTypePassword(),
+            'border border-neutral-800/20 dark:border-neutral-200/20': !$attrs.disabled
           }
         ]"
         v-bind="$attrs"
