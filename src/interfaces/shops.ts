@@ -7,3 +7,8 @@ export interface IShop {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface IShopPayload {
+  name: string
+  coordinate: ICoordinate
+}

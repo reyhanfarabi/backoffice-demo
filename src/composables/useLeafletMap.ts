@@ -1,8 +1,11 @@
+import type { ICoordinate } from '@/common/types'
 import leaflet from 'leaflet'
 
 interface IUseLeafletMap {
   init: (element: HTMLDivElement | null) => void
   showCoordinateOnMap: (lat: number, long: number) => void
+  setMarkerCenterMap: () => void
+  getCenterMapCoordinate: () => ICoordinate
 }
 
 export const useLeafletMap = (): IUseLeafletMap => {
@@ -28,8 +31,37 @@ export const useLeafletMap = (): IUseLeafletMap => {
     map.flyTo({ lat: lat, lng: long })
   }
 
+  const setMarkerCenterMap = (): void => {
+    if (!map) return
+
+    map.on('move', () => {
+      if (!map) return
+
+      if (!marker) {
+        marker = leaflet.marker([map.getCenter().lat, map.getCenter().lng]).addTo(map)
+      } else {
+        marker.setLatLng(map.getCenter())
+      }
+    })
+  }
+
+  const getCenterMapCoordinate = (): ICoordinate => {
+    if (!map)
+      return {
+        latitude: NaN,
+        longitude: NaN
+      }
+
+    return {
+      latitude: map?.getCenter().lat,
+      longitude: map?.getCenter().lng
+    }
+  }
+
   return {
     init,
-    showCoordinateOnMap
+    showCoordinateOnMap,
+    setMarkerCenterMap,
+    getCenterMapCoordinate
   }
 }

@@ -3,13 +3,21 @@
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Shop Location</h1>
       <div class="flex flex-row gap-4">
-        <!-- <BaseButton variant="filled">
-          <span class="text-sm font-semibold">New Shop Location</span>
-        </BaseButton> -->
+        <BaseButton variant="filled">
+          <span
+            class="text-sm font-semibold"
+            @click="
+              () => {
+                isAddModalVisible = true
+              }
+            "
+            >New Shop Location</span
+          >
+        </BaseButton>
       </div>
     </div>
 
-    <div ref="map" class="w-full h-96"></div>
+    <div ref="map" class="w-full h-96 z-0"></div>
 
     <div class="flex flex-col w-full">
       <BaseTable :headers="headers" :datalist="data" :is-loading="false">
@@ -39,6 +47,16 @@
       </BaseTable>
     </div>
 
+    <AddModal
+      class="z-50"
+      v-if="isAddModalVisible"
+      @close-button-event="
+        () => {
+          isAddModalVisible = false
+        }
+      "
+    />
+
     <LoadingFullscreen v-if="false" />
   </div>
 </template>
@@ -53,10 +71,12 @@ import type { IShop } from '@/interfaces/shops'
 import { useShopsStore } from '@/stores/shops'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
+import AddModal from './components/AddModal.vue'
 
 const shopsStore = useShopsStore()
 const leafletMap = useLeafletMap()
 const map: Ref<HTMLDivElement | null> = ref(null)
+const isAddModalVisible: Ref<boolean> = ref(false)
 
 const headers = ref(['#', 'Name', 'Location', 'Created At', 'Updated At', ''])
 
