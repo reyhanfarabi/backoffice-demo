@@ -70,6 +70,12 @@ export const useShopsStore = defineStore('shop', () => {
   const isLoading: Ref<boolean> = ref(false)
   const shops: Ref<IShop[]> = ref([])
 
+  // pagination data
+  const pagination: Ref<Record<string, number>> = ref({
+    page: 1,
+    perPage: 5
+  })
+
   // check if there is existing data on local storage
   const localData = localStorage.getItem('shops_data')
   if (localData) {
@@ -79,7 +85,10 @@ export const useShopsStore = defineStore('shop', () => {
   }
 
   const getShops = (): IShop[] => {
-    return shops.value
+    return shops.value.slice(
+      (pagination.value.page - 1) * pagination.value.perPage,
+      pagination.value.page * pagination.value.perPage
+    )
   }
 
   const getShopById = (id: string): IShop | null => {
@@ -135,12 +144,18 @@ export const useShopsStore = defineStore('shop', () => {
     localStorage.setItem('shops_data', JSON.stringify(shops.value))
   }
 
+  const setPaginationData = (page: number, perPage: number): void => {
+    pagination.value.page = page
+    pagination.value.perPage = perPage
+  }
+
   return {
     getShops,
     isLoading,
     addShop,
     deleteShop,
     getShopById,
-    updateShop
+    updateShop,
+    setPaginationData
   }
 })
