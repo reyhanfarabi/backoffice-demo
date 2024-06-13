@@ -28,7 +28,14 @@
         </template>
         <template #5="{ data }">
           <div class="flex justify-center gap-2">
-            <BaseButton variant="vanilla">
+            <BaseButton
+              variant="vanilla"
+              @click="
+                () => {
+                  $router.push({ name: 'Shops Detail', params: { id: data } })
+                }
+              "
+            >
               <i class="pi pi-ellipsis-h" />
             </BaseButton>
             <BaseButton
