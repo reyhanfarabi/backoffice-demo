@@ -1,5 +1,5 @@
 <template>
-  <aside class="bg-white dark:bg-neutral-950 shadow-md">
+  <aside class="bg-white dark:bg-neutral-950 shadow-md w-64">
     <nav class="flex-grow flex flex-col py-3">
       <div class="flex flex-col" v-for="route in newRoutes" :key="route.path">
         <RouterLink
