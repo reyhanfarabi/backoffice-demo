@@ -34,35 +34,39 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-8 p-8 rounded shadow bg-white dark:bg-neutral-800 w-1/2">
+    <div class="flex flex-col gap-8 p-8 rounded shadow bg-white dark:bg-neutral-800">
       <h1 class="text-2xl font-bold">Detail Categories</h1>
-      <div class="flex flex-row gap-8">
+      <div class="flex flex-col lg:flex-row gap-8">
         <img
           v-if="data.image"
           :src="data.image"
-          class="aspect-square h-60 w-60 rounded border border-neutral-300 dark:border-neutral-700"
+          class="aspect-square h-64 w-64 rounded border border-neutral-300 dark:border-neutral-700"
           :alt="`${data.name} image`"
         />
 
         <div v-if="!categoriesStore.isLoading" class="flex flex-col w-full gap-4">
-          <div class="flex flex-row items-center gap-2">
-            <label class="w-28" for="categoryId">ID</label>
-            <span>:</span>
+          <div class="flex flex-col gap-2">
+            <label class="w-28 text-sm text-neutral-500 dark:text-neutral-400" for="categoryId"
+              >ID</label
+            >
             <span>{{ data.id }}</span>
           </div>
-          <div class="flex flex-row items-center gap-2">
-            <label class="w-28" for="name">Name</label>
-            <span>:</span>
+          <div class="flex flex-col gap-2">
+            <label class="w-28 text-sm text-neutral-500 dark:text-neutral-400" for="name"
+              >Name</label
+            >
             <span>{{ data.name }}</span>
           </div>
-          <div class="flex flex-row items-center gap-2">
-            <label class="w-28" for="creationAt">Creation At</label>
-            <span>:</span>
+          <div class="flex flex-col gap-2">
+            <label class="w-28 text-sm text-neutral-500 dark:text-neutral-400" for="creationAt"
+              >Creation At</label
+            >
             <span>{{ dayjs(data.creationAt).format('MMMM DD, YYYY HH:mm:ss Z') }}</span>
           </div>
-          <div class="flex flex-row items-center gap-2">
-            <label class="w-28" for="updatedAt">Updated At</label>
-            <span>:</span>
+          <div class="flex flex-col gap-2">
+            <label class="w-28 text-sm text-neutral-500 dark:text-neutral-400" for="updatedAt"
+              >Updated At</label
+            >
             <span>{{ dayjs(data.updatedAt).format('MMMM DD, YYYY HH:mm:ss Z') }}</span>
           </div>
         </div>

@@ -29,10 +29,22 @@
         @next-page-event="handleChangePage('next')"
         @change-per-page-event="(val: number) => handleChangePerPage(val)"
       >
+        <template #1="{ data }">
+          <div class="min-w-56">{{ data }}</div>
+        </template>
         <template #2="{ data }">
-          <BaseButton variant="filled" @click="handleShowOnMap(data.latitude, data.longitude)"
+          <BaseButton
+            class="min-w-32"
+            variant="filled"
+            @click="handleShowOnMap(data.latitude, data.longitude)"
             >Show on Map</BaseButton
           >
+        </template>
+        <template #3="{ data }">
+          <div class="min-w-32">{{ data }}</div>
+        </template>
+        <template #4="{ data }">
+          <div class="min-w-32">{{ data }}</div>
         </template>
         <template #5="{ data }">
           <div class="flex justify-center gap-2">

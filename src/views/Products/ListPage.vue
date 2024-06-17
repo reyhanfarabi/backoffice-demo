@@ -26,7 +26,7 @@
     <div class="flex flex-col text-sm gap-2">
       <span class="font-bold">Filters by</span>
       <div
-        class="flex flex-row p-4 gap-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
+        class="flex flex-col md:flex-row p-4 gap-4 rounded border border-neutral-800/20 dark:border-neutral-200/20"
       >
         <div class="flex flex-col gap-2">
           <label for="filterByTitle">Search</label>
@@ -54,7 +54,6 @@
           <label for="filterByCategory">Category</label>
           <BaseDropdown
             id="filterByCategory"
-            class="w-56"
             :options="categoriesOptions"
             :value="filters.categoryId"
             @change="
@@ -74,7 +73,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col w-full">
+    <div class="flex flex-col">
       <BaseTable
         :headers="headers"
         :datalist="data"
@@ -85,13 +84,19 @@
         @change-per-page-event="(val: number) => handleChangePerPage(val)"
       >
         <template #1="{ data }">
-          <span> {{ data }} </span>
+          <div class="min-w-32 md:min-w-56">{{ data }}</div>
         </template>
         <template #3="{ data }">
           <span> {{ `$${data}` }} </span>
         </template>
         <template #4="{ data }">
           <span class="line-clamp-2 w-[32rem]"> {{ data }} </span>
+        </template>
+        <template #5="{ data }">
+          <div class="min-w-32">{{ data }}</div>
+        </template>
+        <template #6="{ data }">
+          <div class="min-w-32">{{ data }}</div>
         </template>
         <template #7="{ data }">
           <div class="flex justify-center gap-2">

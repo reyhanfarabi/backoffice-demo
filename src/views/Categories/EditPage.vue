@@ -8,7 +8,7 @@
       <i class="pi pi-arrow-left" />
     </BaseButton>
 
-    <div class="flex flex-col gap-8 p-8 rounded bg-white dark:bg-neutral-800 w-1/2 shadow">
+    <div class="flex flex-col gap-8 p-8 rounded bg-white dark:bg-neutral-800 shadow">
       <div class="flex flex-row justify-between items-center">
         <h1 class="text-2xl font-bold">Edit Categories</h1>
         <BaseButton
@@ -23,7 +23,7 @@
 
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
-          <label class="text-sm" for="name">Name</label>
+          <label class="text-sm text-neutral-500 dark:text-neutral-400" for="name">Name</label>
           <BaseInput
             type="text"
             name="nameField"
@@ -40,7 +40,7 @@
         </div>
         <div class="flex flex-col gap-2">
           <div class="flex flex-col gap-2">
-            <label class="text-sm" for="name">Image</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="name">Image</label>
             <BaseInput
               type="text"
               name="imageField"

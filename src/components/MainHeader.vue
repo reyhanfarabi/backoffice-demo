@@ -6,7 +6,11 @@
       <h1 class="font-bold text-lg">Backoffice</h1>
     </RouterLink>
 
-    <div class="flex flex-row gap-2">
+    <BaseButton class="md:hidden" variant="vanilla" @click="toggleShowMobileNavbar">
+      <i class="pi pi-bars text-2xl" />
+    </BaseButton>
+
+    <div class="hidden md:flex flex-row gap-2">
       <!-- Theme Switcher -->
       <ThemeSwitcher class="size-10" />
 
@@ -37,7 +41,7 @@
         <!-- Profile Menu -->
         <div
           v-show="isProfileVisible"
-          class="flex flex-col absolute right-6 w-60 mt-4 p-2 gap-2 rounded shadow-sm border dark:border-neutral-700 bg-white dark:bg-neutral-800 divide-y dark:divide-neutral-700"
+          class="flex flex-col absolute right-6 w-60 mt-4 p-2 gap-2 rounded shadow-sm border dark:border-neutral-700 bg-white dark:bg-neutral-800 divide-y dark:divide-neutral-700 z-50"
         >
           <div class="flex flex-row items-center gap-2 p-2">
             <img
@@ -75,6 +79,8 @@ import { useAuthStore } from '@/stores/auth'
 import type { IUser } from '@/interfaces/user'
 import ThemeSwitcher from './buttons/ThemeSwitcher.vue'
 
+const emit = defineEmits(['toggleShowMobileNavbar'])
+
 const authStore = useAuthStore()
 const isProfileVisible: Ref<boolean> = ref(false)
 const profileEl: Ref<HTMLDivElement | null> = ref(null)
@@ -103,5 +109,9 @@ const handleClickOutside = (event: Event): void => {
 
 const handleLogout = (): void => {
   authStore.logout()
+}
+
+const toggleShowMobileNavbar = (): void => {
+  emit('toggleShowMobileNavbar')
 }
 </script>
