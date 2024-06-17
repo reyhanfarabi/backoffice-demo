@@ -22,9 +22,9 @@
       </div>
 
       <div class="flex flex-row gap-8 pb-10">
-        <div class="flex flex-col gap-4 w-1/2">
+        <div class="flex flex-col gap-4 w-full">
           <div class="flex flex-col gap-2">
-            <label class="text-sm" for="title">Title</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="title">Title</label>
             <BaseInput
               type="text"
               name="titleField"
@@ -35,7 +35,7 @@
             />
           </div>
           <div class="flex flex-col gap-2">
-            <label class="text-sm" for="price">Price</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="price">Price</label>
             <BaseInput
               type="number"
               name="priceField"
@@ -46,10 +46,13 @@
             />
           </div>
           <div class="flex flex-col gap-2">
-            <label class="text-sm" for="description">Description</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="description"
+              >Description</label
+            >
             <BaseTextArea
               name="descriptionField"
               id="description"
+              rows="4"
               v-model="data.description"
               :is-error="$v.description.$error"
               :error-message="

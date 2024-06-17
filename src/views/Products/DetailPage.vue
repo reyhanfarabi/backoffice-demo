@@ -36,31 +36,26 @@
 
     <div v-if="data" class="flex flex-col p-8 gap-8 rounded shadow bg-white dark:bg-neutral-800">
       <h1 class="text-2xl font-bold">Detail Products</h1>
-      <div class="flex flex-col justify-center gap-4 w-2/3">
-        <div class="flex flex-row gap-2">
-          <span class="w-28">ID</span>
-          <span>:</span>
+      <div class="flex flex-col justify-center gap-4">
+        <div class="flex flex-col gap-2">
+          <span class="w-28 text-sm text-neutral-500 dark:text-neutral-400">ID</span>
           <span class="w-full">{{ data?.id }}</span>
         </div>
-        <div class="flex flex-row gap-2">
-          <span class="w-28">Title</span>
-          <span>:</span>
+        <div class="flex flex-col gap-2">
+          <span class="w-28 text-sm text-neutral-500 dark:text-neutral-400">Title</span>
           <span class="w-full">{{ data?.title }}</span>
         </div>
-        <div class="flex flex-row gap-2">
-          <span class="w-28">Category</span>
-          <span>:</span>
+        <div class="flex flex-col gap-2">
+          <span class="w-28 text-sm text-neutral-500 dark:text-neutral-400">Category</span>
           <span class="w-full">{{ data?.category.name }}</span>
         </div>
-        <div class="flex flex-row gap-2">
-          <span class="w-28">Price</span>
-          <span>:</span>
+        <div class="flex flex-col gap-2">
+          <span class="w-28 text-sm text-neutral-500 dark:text-neutral-400">Price</span>
           <span class="w-full">${{ data?.price || 0 }}</span>
         </div>
-        <div class="flex flex-row gap-2">
-          <span class="w-28">Description</span>
-          <span>:</span>
-          <span class="w-full">{{ data?.description }}</span>
+        <div class="flex flex-col gap-2">
+          <span class="w-28 text-sm text-neutral-500 dark:text-neutral-400">Description</span>
+          <span class="w-full text-justify">{{ data?.description }}</span>
         </div>
       </div>
     </div>

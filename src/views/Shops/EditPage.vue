@@ -21,21 +21,18 @@
         </BaseButton>
       </div>
 
-      <div class="grid grid-cols-2 gap-8 w-full">
-        <div class="col-span-1 flex flex-col gap-4">
-          <div class="flex flex-col gap-2">
-            <label class="text-sm" for="name">Location</label>
-            <div ref="map" class="w-full h-80 z-0"></div>
-          </div>
+      <div class="flex flex-col lg:flex-row gap-4 w-full">
+        <div class="flex-1 flex flex-col gap-4">
+          <div ref="map" class="w-full h-80 z-0"></div>
         </div>
 
-        <div class="col-span-1 flex flex-col gap-8">
+        <div class="flex-1 flex flex-col gap-4">
           <div class="flex flex-col gap-2">
-            <label class="text-sm text-neutral-200/80" for="id">ID</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="id">ID</label>
             <span>{{ data.id }}</span>
           </div>
           <div class="flex flex-col gap-2">
-            <label class="text-sm text-neutral-200/80" for="name">Name</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="name">Name</label>
             <BaseInput
               type="text"
               name="nameField"
@@ -51,11 +48,15 @@
             />
           </div>
           <div class="flex flex-col gap-2">
-            <label class="text-sm text-neutral-200/80" for="createdAt">Created At</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="createdAt"
+              >Created At</label
+            >
             <span>{{ dayjs(data.createdAt).format('MMMM DD, YYYY HH:mm:ss Z') }}</span>
           </div>
           <div class="flex flex-col gap-2">
-            <label class="text-sm text-neutral-200/80" for="updatedAt">Updated At</label>
+            <label class="text-sm text-neutral-500 dark:text-neutral-400" for="updatedAt"
+              >Updated At</label
+            >
             <span>{{ dayjs(data.updatedAt).format('MMMM DD, YYYY HH:mm:ss Z') }}</span>
           </div>
         </div>

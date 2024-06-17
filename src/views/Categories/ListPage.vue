@@ -21,6 +21,12 @@
             {{ data }}
           </div>
         </template>
+        <template #3="{ data }">
+          <div class="min-w-32">{{ data }}</div>
+        </template>
+        <template #4="{ data }">
+          <div class="min-w-32">{{ data }}</div>
+        </template>
         <template #5="{ data }">
           <div class="flex justify-center gap-2">
             <BaseButton

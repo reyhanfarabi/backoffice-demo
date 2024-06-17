@@ -1,6 +1,6 @@
 <template>
   <BaseModals>
-    <div class="flex flex-col w-[32rem]">
+    <div class="flex flex-col w-[90vw] md:w-[32rem]">
       <BaseButton variant="vanilla" class="self-end" @click="handleCloseAddModal">
         <i class="pi pi-times" />
       </BaseButton>
