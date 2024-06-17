@@ -21,8 +21,8 @@
         </BaseButton>
       </div>
 
-      <div class="flex flex-row gap-8 pb-10">
-        <div class="flex flex-col gap-4 w-1/2">
+      <div class="flex flex-col md:flex-row gap-8 pb-10">
+        <div class="flex flex-col gap-4 md:w-1/2">
           <div class="flex flex-col gap-2">
             <label class="text-sm" for="title">Title</label>
             <BaseInput
@@ -70,7 +70,7 @@
           </div>
         </div>
 
-        <div class="flex flex-col gap-4 w-1/2">
+        <div class="flex flex-col gap-4 md:w-1/2">
           <div class="flex flex-col gap-2">
             <label class="text-sm" for="images">Images</label>
             <div
