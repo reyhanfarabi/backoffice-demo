@@ -1,7 +1,7 @@
 <template>
   <div
     ref="loadingProgressEl"
-    class="bg-teal-500 dark:bg-teal-600 min-h-1 z-50"
+    class="absolute top-0 bg-teal-500 dark:bg-teal-600 min-h-1 z-50"
     :class="[
       { 'opacity-0': !loadingStore.isProgressVisible },
       { 'opacity-100 ': loadingStore.isProgressVisible }
