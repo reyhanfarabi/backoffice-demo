@@ -3,6 +3,7 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import { routes } from './private'
 import { publicRoutes } from './public'
 import { API } from '@/api'
+import { useLoadingStore } from '@/stores/loading'
 
 const getRoutes = (): RouteRecordRaw[] => {
   let result: RouteRecordRaw[] = []
@@ -37,6 +38,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  const loadingStore = useLoadingStore()
   const routeName = String(to.name)
   const whiteList = publicRoutes.map((r) => r.name)
 
@@ -45,11 +47,14 @@ router.beforeEach(async (to) => {
   }
 
   try {
+    loadingStore.startLoadingProgress()
     await API.auth.whoAmI()
     return true
   } catch (e) {
     console.log(e)
     return { name: 'Login' }
+  } finally {
+    loadingStore.stopLoadingProgress()
   }
 })
 

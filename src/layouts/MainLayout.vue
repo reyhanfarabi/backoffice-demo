@@ -2,6 +2,8 @@
   <div
     class="w-screen h-screen flex flex-col text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-900 font-roboto subpixel-antialiased"
   >
+    <LoadingProgress />
+
     <MainHeader @toggle-show-mobile-navbar="handleOpenNavbarMobile" />
     <NavigationMobile
       class="md:hidden"
@@ -23,6 +25,7 @@ import MainHeader from '@/components/MainHeader.vue'
 import NavigationSidebar from '@/components/navbar/NavigationSidebar.vue'
 import NavigationMobile from '@/components/navbar/NavigationMobile.vue'
 import { ref, type Ref } from 'vue'
+import LoadingProgress from '@/components/loadings/LoadingProgress.vue'
 
 const isNavbarMobileVisible: Ref<boolean> = ref(false)
 
