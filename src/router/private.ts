@@ -29,7 +29,7 @@ export interface IRouteMeta {
 
 export const routes: IRoute[] = [
   {
-    path: '/',
+    path: '/admin',
     name: 'Dashboard',
     component: MainView,
     icon: 'pi-home',
@@ -39,7 +39,7 @@ export const routes: IRoute[] = [
     children: []
   },
   {
-    path: '/categories',
+    path: '/admin/categories',
     name: 'Categories',
     component: CategoriesListPage,
     icon: 'pi-th-large',
@@ -65,7 +65,7 @@ export const routes: IRoute[] = [
     ]
   },
   {
-    path: '/products',
+    path: '/admin/products',
     name: 'Products',
     component: ProductsListPage,
     icon: 'pi-database',
@@ -96,7 +96,7 @@ export const routes: IRoute[] = [
     ]
   },
   {
-    path: '/shops',
+    path: '/admin/shops',
     name: 'Shops',
     component: ShopsListPage,
     icon: 'pi-shop',

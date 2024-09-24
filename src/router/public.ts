@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const publicRoutes: RouteRecordRaw[] = [
   {
-    path: '/login',
+    path: '/admin/login',
     name: 'Login',
     component: LoginView
   }
