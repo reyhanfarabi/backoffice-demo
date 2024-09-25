@@ -4,7 +4,19 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        roboto: ['Roboto', 'sans-serif']
+        roboto: ['Roboto', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        'playfair-display': ['Playfair Display', 'serif']
+      },
+      colors: {
+        landing: {
+          dark: '#131A1B',
+          'dark-secondary': '#203B40',
+          light: '#E7F3F3',
+          'light-secondary': '#FFFFFF',
+          brand: '#CBF36E',
+          'brand-secondary': '#276E6E'
+        }
       }
     }
   },
