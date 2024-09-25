@@ -52,7 +52,7 @@ router.beforeEach(async (to) => {
     return true
   } catch (e) {
     console.log(e)
-    return { name: 'Login' }
+    return { name: 'Landing Page' }
   } finally {
     loadingStore.stopLoadingProgress()
   }
