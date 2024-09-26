@@ -1,6 +1,5 @@
 <template>
-  <div class="absolute h-screen w-screen bg-white/70 dark:bg-black/70 backdrop-blur-lg z-50">
-    <ThemeSwitcher class="absolute top-6 right-6" />
+  <div class="w-full h-[90vh] relative">
     <div class="flex flex-row items-center justify-center h-1/4">
       <div class="flex flex-col items-center gap-4">
         <div class="flex flex-row items-center gap-4">
@@ -15,10 +14,8 @@
             class="pi text-neutral-700 dark:text-neutral-300 pi-user bg-neutral-100 dark:bg-neutral-900 p-2 rounded-full border border-neutral-300 dark:border-neutral-700"
           />
           <div class="flex flex-col">
-            <span class="text-xl text-black dark:text-white">{{ userData.name }}</span>
-            <span class="text-sm font-light text-neutral-500/90 dark:text-neutral-400/90">{{
-              userData.email
-            }}</span>
+            <span class="text-xl text-white">{{ userData.name }}</span>
+            <span class="text-sm font-light text-neutral-400/90">{{ userData.email }}</span>
           </div>
         </div>
         <BaseButton variant="filled" @click="handleLogout">Logout</BaseButton>
@@ -26,13 +23,11 @@
     </div>
 
     <nav
-      class="absolute w-full h-3/4 bottom-0 flex flex-col bg-white dark:bg-neutral-950 shadow-md"
+      class="absolute w-full h-3/4 bottom-0 flex flex-col bg-white dark:bg-neutral-950 shadow-md rounded-md overflow-y-hidden"
     >
       <div class="flex flex-row justify-between items-center p-6">
-        <h1 class="font-bold text-2xl">Backoffice</h1>
-        <BaseButton variant="vanilla" @click="handleCloseNavbar">
-          <i class="pi pi-times text-2xl" />
-        </BaseButton>
+        <h1 class="font-bold text-2xl">Menu</h1>
+        <ThemeSwitcher class="absolute top-6 right-6" />
       </div>
       <div
         class="flex flex-col"
