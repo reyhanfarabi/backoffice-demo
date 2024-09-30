@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<IBaseButtonProps>(), {
 
 <style lang="postcss">
 .base-button {
-  @apply flex justify-center items-center
+  @apply flex justify-center items-center;
 }
 
 .base-button.filled {
